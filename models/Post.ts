@@ -5,7 +5,7 @@
 
 export interface Post {
   id: string;
-  imageUrl: string; // URL to the stored image
+  imageUrl: string | any; // URL or required local image
   description: string; // Text caption/description
   createdAt: Date; // Timestamp for chronological sorting
   updatedAt: Date;

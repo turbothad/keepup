@@ -86,7 +86,7 @@ const sampleUsers: User[] = [
 const samplePosts: Post[] = [
   {
     id: '1',
-    imageUrl: 'https://via.placeholder.com/400',
+    imageUrl: require('../assets/images/icon.png'),
     description: 'Just had a great day hiking with the family!',
     createdAt: new Date(Date.now() - 3600000), // 1 hour ago
     updatedAt: new Date(Date.now() - 3600000),
@@ -98,7 +98,7 @@ const samplePosts: Post[] = [
   },
   {
     id: '2',
-    imageUrl: 'https://via.placeholder.com/400',
+    imageUrl: require('../assets/images/react-logo.png'),
     description: 'Our team just shipped a major feature. So proud of everyone!',
     createdAt: new Date(Date.now() - 7200000), // 2 hours ago
     updatedAt: new Date(Date.now() - 7200000),
@@ -110,7 +110,7 @@ const samplePosts: Post[] = [
   },
   {
     id: '3',
-    imageUrl: 'https://via.placeholder.com/400',
+    imageUrl: require('../assets/images/splash-icon.png'),
     description: 'Reuniting with my college friends next weekend!',
     createdAt: new Date(Date.now() - 86400000), // 1 day ago
     updatedAt: new Date(Date.now() - 86400000),
