@@ -44,7 +44,12 @@ export default function PostCard({ post, author, currentUserId, onLike, onSave }
         </View>
       </View>
       
-      <Image source={{ uri: post.imageUrl }} style={styles.postImage} />
+      <Image 
+        source={typeof post.imageUrl === 'string' 
+          ? { uri: post.imageUrl } 
+          : post.imageUrl} 
+        style={styles.postImage} 
+      />
       
       <View style={styles.content}>
         <ThemedText>{post.description}</ThemedText>
