@@ -7,11 +7,10 @@ import { Post } from '../../models/Post';
 
 interface CreatePostFormProps {
   userId: string;
-  hasPostedToday: boolean;
   onCreatePost: (post: Partial<Post>) => void;
 }
 
-export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }: CreatePostFormProps) {
+export default function CreatePostForm({ userId, onCreatePost }: CreatePostFormProps) {
   const [image, setImage] = useState<string | null>(null);
   const [description, setDescription] = useState('');
 
@@ -29,15 +28,6 @@ export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }:
   };
 
   const handleSubmit = () => {
-    if (hasPostedToday) {
-      Alert.alert(
-        "Daily Post Limit Reached",
-        "You've already shared a post today. Come back tomorrow for a fresh post!",
-        [{ text: "OK" }]
-      );
-      return;
-    }
-    
     if (!image) {
       Alert.alert("Image Required", "Please select an image for your post");
       return;
@@ -56,7 +46,7 @@ export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }:
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="subtitle" style={styles.title}>Today's Moment</ThemedText>
+      <ThemedText type="subtitle" style={styles.title}>Share a Moment</ThemedText>
       
       <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
         {image ? (
@@ -79,12 +69,11 @@ export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }:
       />
       
       <TouchableOpacity 
-        style={[styles.button, hasPostedToday && styles.disabledButton]} 
+        style={styles.button} 
         onPress={handleSubmit}
-        disabled={hasPostedToday}
       >
         <ThemedText style={styles.buttonText}>
-          {hasPostedToday ? "Already Posted Today" : "Share Post"}
+          Share Post
         </ThemedText>
       </TouchableOpacity>
     </ThemedView>
@@ -132,9 +121,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 15,
     alignItems: 'center',
-  },
-  disabledButton: {
-    backgroundColor: '#555',
   },
   buttonText: {
     color: 'black',
