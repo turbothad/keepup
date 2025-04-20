@@ -3,6 +3,7 @@
 // import 'react-native-get-random-values';
 
 const mongoose = require('mongoose');
+const env = require('./environment');
 
 // Singleton pattern for database connection
 let instance = null;
@@ -24,8 +25,8 @@ class Database {
         return;
       }
 
-      // Get MongoDB URI from environment variable
-      const uri = process.env.MONGODB_URI;
+      // Get MongoDB URI from environment config
+      const uri = env.MONGODB_URI;
       
       if (!uri) {
         throw new Error('MONGODB_URI environment variable is not defined');

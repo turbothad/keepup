@@ -11,15 +11,19 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "seed-db": "node ./scripts/seed-database.js",
-    "test-db": "node ./scripts/test-connection.js"
+    "test-db": "node ./scripts/test-connection.js",
+    "server": "node ./server/index.js"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "expo": "~52.0.43",
     "expo-blur": "~14.0.3",
@@ -34,6 +38,7 @@
     "expo-symbols": "~0.2.2",
     "expo-system-ui": "~4.0.9",
     "expo-web-browser": "~14.0.2",
+    "express": "^4.21.2",
     "mongoose": "^8.0.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",

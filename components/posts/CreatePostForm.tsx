@@ -1,29 +1,48 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, Image, View, Alert } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, Image, View, Alert, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
 import { Post } from '../../models/Post';
 
+// Debug ImagePicker APIs
+console.log('ImagePicker APIs available:', {
+  MediaTypeOptions: ImagePicker.MediaTypeOptions || 'Not available'
+});
+
 interface CreatePostFormProps {
   userId: string;
   onCreatePost: (post: Partial<Post>) => void;
+  isSubmitting?: boolean;
 }
 
-export default function CreatePostForm({ userId, onCreatePost }: CreatePostFormProps) {
+export default function CreatePostForm({ userId, onCreatePost, isSubmitting = false }: CreatePostFormProps) {
   const [image, setImage] = useState<string | null>(null);
   const [description, setDescription] = useState('');
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      // Use the current ImagePicker API
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+        base64: true,
+      });
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      console.log('ImagePicker result:', {
+        canceled: result.canceled,
+        assets: result.assets ? `${result.assets.length} assets` : 'no assets'
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        console.log('Setting image URI:', result.assets[0].uri.substring(0, 30) + '...');
+        setImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+      Alert.alert('Error', 'Failed to pick image');
     }
   };
 
@@ -33,22 +52,41 @@ export default function CreatePostForm({ userId, onCreatePost }: CreatePostFormP
       return;
     }
 
+    console.log('Creating post with data:', {
+      imageUrlLength: image ? image.length : 0,
+      description: description.substring(0, 20) + (description.length > 20 ? '...' : ''),
+      authorId: userId
+    });
+    
     // Create new post
     const newPost: Partial<Post> = {
       imageUrl: image,
       description,
       authorId: userId,
       createdAt: new Date(),
+      updatedAt: new Date(),
+      comments: [],
+      likes: [],
+      savedBy: []
     };
     
-    onCreatePost(newPost);
+    try {
+      onCreatePost(newPost);
+    } catch (error) {
+      console.error('Error in handleSubmit:', error);
+      Alert.alert('Error', 'Failed to create post');
+    }
   };
 
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="subtitle" style={styles.title}>Share a Moment</ThemedText>
       
-      <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
+      <TouchableOpacity 
+        style={styles.imageContainer} 
+        onPress={pickImage}
+        disabled={isSubmitting}
+      >
         {image ? (
           <Image source={{ uri: image }} style={styles.image} />
         ) : (
@@ -66,15 +104,24 @@ export default function CreatePostForm({ userId, onCreatePost }: CreatePostFormP
         onChangeText={setDescription}
         multiline
         maxLength={250}
+        editable={!isSubmitting}
       />
       
       <TouchableOpacity 
-        style={styles.button} 
+        style={[
+          styles.button,
+          isSubmitting && styles.buttonDisabled
+        ]} 
         onPress={handleSubmit}
+        disabled={isSubmitting}
       >
-        <ThemedText style={styles.buttonText}>
-          Share Post
-        </ThemedText>
+        {isSubmitting ? (
+          <ActivityIndicator color="black" />
+        ) : (
+          <ThemedText style={styles.buttonText}>
+            Share Post
+          </ThemedText>
+        )}
       </TouchableOpacity>
     </ThemedView>
   );
@@ -121,6 +168,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 15,
     alignItems: 'center',
+  },
+  buttonDisabled: {
+    backgroundColor: '#888',
   },
   buttonText: {
     color: 'black',

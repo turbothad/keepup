@@ -1,147 +1,96 @@
-import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { ThemedText } from '../components/ThemedText';
 import { ThemedView } from '../components/ThemedView';
 import PostCard from '../components/posts/PostCard';
 import { Post } from '../models/Post';
 import { User, UserTheme } from '../models/User';
+import { PostsAPI, UsersAPI } from '../services/api';
 
-// Sample users data
-const sampleUsers: User[] = [
-  {
-    id: 'user1',
-    username: 'John Doe',
-    email: 'john@example.com',
-    profilePicture: 'https://via.placeholder.com/40',
-    friends: ['user2', 'user3'],
-    groups: ['1', '2'],
-    settings: {
-      theme: UserTheme.DARK,
-      notifications: {
-        newComments: true,
-        friendRequests: true,
-        groupInvites: true,
-        dailyReminder: true
-      },
-      privacy: {
-        profileVisibility: 'public',
-        allowFriendRequests: true
-      }
-    },
-    hasPostedToday: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'user2',
-    username: 'Jane Smith',
-    email: 'jane@example.com',
-    profilePicture: 'https://via.placeholder.com/40',
-    friends: ['user1', 'user3'],
-    groups: ['3'],
-    settings: {
-      theme: UserTheme.DARK,
-      notifications: {
-        newComments: true,
-        friendRequests: true,
-        groupInvites: true,
-        dailyReminder: false
-      },
-      privacy: {
-        profileVisibility: 'friends',
-        allowFriendRequests: true
-      }
-    },
-    hasPostedToday: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'user3',
-    username: 'Mike Johnson',
-    email: 'mike@example.com',
-    profilePicture: 'https://via.placeholder.com/40',
-    friends: ['user1', 'user2'],
-    groups: ['1', '2'],
-    settings: {
-      theme: UserTheme.DARK,
-      notifications: {
-        newComments: true,
-        friendRequests: true,
-        groupInvites: true,
-        dailyReminder: true
-      },
-      privacy: {
-        profileVisibility: 'public',
-        allowFriendRequests: true
-      }
-    },
-    hasPostedToday: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-];
-
-// Sample posts data
-const samplePosts: Post[] = [
-  {
-    id: '1',
-    imageUrl: require('../assets/images/icon.png'),
-    description: 'Just had a great day hiking with the family!',
-    createdAt: new Date(Date.now() - 3600000), // 1 hour ago
-    updatedAt: new Date(Date.now() - 3600000),
-    authorId: 'user1',
-    groupId: '1',
-    comments: [],
-    likes: ['user2', 'user3'],
-    savedBy: ['user2']
-  },
-  {
-    id: '2',
-    imageUrl: require('../assets/images/react-logo.png'),
-    description: 'Our team just shipped a major feature. So proud of everyone!',
-    createdAt: new Date(Date.now() - 7200000), // 2 hours ago
-    updatedAt: new Date(Date.now() - 7200000),
-    authorId: 'user2',
-    groupId: '3',
-    comments: [],
-    likes: ['user1', 'user3'],
-    savedBy: []
-  },
-  {
-    id: '3',
-    imageUrl: require('../assets/images/splash-icon.png'),
-    description: 'Reuniting with my college friends next weekend!',
-    createdAt: new Date(Date.now() - 86400000), // 1 day ago
-    updatedAt: new Date(Date.now() - 86400000),
-    authorId: 'user3',
-    groupId: '2',
-    comments: [],
-    likes: ['user1'],
-    savedBy: ['user1', 'user2']
-  },
-];
+// Debug UserTheme
+console.log('UserTheme import check:', UserTheme);
 
 export default function Feed() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
   const currentUserId = 'user1'; // In a real app, this would come from authentication
 
-  const handleLike = (postId: string) => {
-    console.log(`Like pressed for post: ${postId}`);
-    // In a real app, this would call an API to like the post
-  };
+  useEffect(() => {
+    // Fetch posts when component mounts
+    fetchData();
+  }, []);
 
-  const handleSave = (postId: string) => {
-    console.log(`Save pressed for post: ${postId}`);
-    // In a real app, this would call an API to save the post
-  };
-
-  // Function to find the author of a post
-  const findAuthor = (authorId: string): User => {
-    const author = sampleUsers.find(user => user.id === authorId);
-    if (!author) {
-      throw new Error(`Author with ID ${authorId} not found`);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // The API now includes the author object with each post
+      const fetchedPosts = await PostsAPI.getPosts();
+      setPosts(fetchedPosts);
+      
+    } catch (err) {
+      console.error('Failed to fetch data:', err);
+      setError('Failed to load feed. Please try again later.');
+    } finally {
+      setLoading(false);
     }
-    return author;
+  };
+
+  const handleLike = async (postId: string) => {
+    try {
+      await PostsAPI.likePost(postId, currentUserId);
+      // Update local state to reflect the like
+      setPosts(posts.map(post => {
+        if (post.id === postId) {
+          // If user already liked it, remove like (toggle)
+          const userLikedIndex = post.likes.indexOf(currentUserId);
+          if (userLikedIndex > -1) {
+            return {
+              ...post,
+              likes: post.likes.filter(id => id !== currentUserId)
+            };
+          } 
+          // Otherwise add the like
+          return {
+            ...post,
+            likes: [...post.likes, currentUserId]
+          };
+        }
+        return post;
+      }));
+    } catch (err) {
+      console.error('Error liking post:', err);
+    }
+  };
+
+  const handleSave = async (postId: string) => {
+    try {
+      await PostsAPI.savePost(postId, currentUserId);
+      // Update local state to reflect the save
+      setPosts(posts.map(post => {
+        if (post.id === postId) {
+          // If user already saved it, remove save (toggle)
+          const userSavedIndex = post.savedBy.indexOf(currentUserId);
+          if (userSavedIndex > -1) {
+            return {
+              ...post,
+              savedBy: post.savedBy.filter(id => id !== currentUserId)
+            };
+          } 
+          // Otherwise add the save
+          return {
+            ...post,
+            savedBy: [...post.savedBy, currentUserId]
+          };
+        }
+        return post;
+      }));
+    } catch (err) {
+      console.error('Error saving post:', err);
+    }
   };
 
   return (
@@ -149,20 +98,28 @@ export default function Feed() {
       <ThemedText type="title" style={styles.title}>Feed</ThemedText>
       <ThemedText style={styles.subtitle}>Your chronological timeline</ThemedText>
       
-      <FlatList
-        data={samplePosts}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <PostCard 
-            post={item}
-            author={findAuthor(item.authorId)}
-            currentUserId={currentUserId}
-            onLike={handleLike}
-            onSave={handleSave}
-          />
-        )}
-        style={styles.list}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#fff" />
+      ) : error ? (
+        <ThemedText style={styles.errorText}>{error}</ThemedText>
+      ) : (
+        <FlatList
+          data={posts}
+          keyExtractor={(item) => item._id || item.id}
+          renderItem={({ item }) => (
+            <PostCard 
+              post={item}
+              author={item.author}
+              currentUserId={currentUserId}
+              onLike={handleLike}
+              onSave={handleSave}
+            />
+          )}
+          style={styles.list}
+          refreshing={loading}
+          onRefresh={fetchData}
+        />
+      )}
     </ThemedView>
   );
 }
@@ -184,5 +141,10 @@ const styles = StyleSheet.create({
   list: {
     width: '100%',
     paddingHorizontal: 10,
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    margin: 20,
   }
 }); 

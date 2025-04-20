@@ -10,7 +10,7 @@ import { ThemedView } from '../ThemedView';
 
 interface PostCardProps {
   post: Post;
-  author: User;
+  author?: User;
   currentUserId: string;
   onLike: (postId: string) => void;
   onSave: (postId: string) => void;
@@ -31,15 +31,19 @@ export default function PostCard({ post, author, currentUserId, onLike, onSave }
     });
   };
 
+  // If no author is provided, use a placeholder
+  const authorName = author?.username || 'Unknown User';
+  const authorAvatar = author?.profilePicture || 'https://via.placeholder.com/40';
+
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
         <Image 
-          source={{ uri: author.profilePicture || 'https://via.placeholder.com/40' }} 
+          source={{ uri: authorAvatar }} 
           style={styles.avatar} 
         />
         <View style={styles.headerText}>
-          <ThemedText type="defaultSemiBold">{author.username}</ThemedText>
+          <ThemedText type="defaultSemiBold">{authorName}</ThemedText>
           <ThemedText style={styles.timestamp}>{formatDate(post.createdAt)}</ThemedText>
         </View>
       </View>
