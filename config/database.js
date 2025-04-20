@@ -24,14 +24,16 @@ class Database {
         return;
       }
 
-      // Get MongoDB URI from environment variable
-      const uri = process.env.MONGODB_URI;
+      // Get MongoDB URI based on environment
+      const uri = process.env.NODE_ENV === 'production' 
+        ? process.env.MONGODB_URI_PROD 
+        : process.env.MONGODB_URI;
       
       if (!uri) {
-        throw new Error('MONGODB_URI environment variable is not defined');
+        throw new Error('MongoDB URI environment variable is not defined');
       }
       
-      console.log('Connecting to MongoDB...');
+      console.log(`Connecting to MongoDB (${process.env.NODE_ENV || 'development'} environment)...`);
       await mongoose.connect(uri);
       
       this.isConnected = true;

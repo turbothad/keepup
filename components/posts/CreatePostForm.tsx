@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, Image, View, Alert } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, Image, View, Alert, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
 import { Post } from '../../models/Post';
+
+// For image compression and conversion
+const MAX_IMAGE_SIZE = 800; // Max width/height in pixels
 
 interface CreatePostFormProps {
   userId: string;
@@ -13,42 +16,81 @@ interface CreatePostFormProps {
 export default function CreatePostForm({ userId, onCreatePost }: CreatePostFormProps) {
   const [image, setImage] = useState<string | null>(null);
   const [description, setDescription] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.5, // Lower quality for smaller size
+        base64: false, // Changed to false as we'll use the URI directly
+      });
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      if (!result.canceled) {
+        console.log('Image selected: ' + result.assets[0].uri.substring(0, 50) + '...');
+        console.log('Image size: ' + (result.assets[0].fileSize || 'unknown') + ' bytes');
+        setImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+      Alert.alert('Error', 'Failed to pick image. Please try again.');
     }
   };
 
-  const handleSubmit = () => {
-    if (!image) {
-      Alert.alert("Image Required", "Please select an image for your post");
-      return;
-    }
+  const handleSubmit = async () => {
+    try {
+      if (!image) {
+        Alert.alert("Image Required", "Please select an image for your post");
+        return;
+      }
 
-    // Create new post
-    const newPost: Partial<Post> = {
-      imageUrl: image,
-      description,
-      authorId: userId,
-      createdAt: new Date(),
-    };
-    
-    onCreatePost(newPost);
+      if (!description.trim()) {
+        Alert.alert("Description Required", "Please add a description for your post");
+        return;
+      }
+
+      setIsLoading(true);
+
+      // Log the post data we're about to send
+      const postData: Partial<Post> = {
+        imageUrl: image,
+        description: description.trim(),
+        authorId: userId,
+        createdAt: new Date(),
+      };
+
+      console.log('Creating post:', postData);
+      
+      // For debugging purposes
+      if (image.startsWith('file://')) {
+        console.log('Using local file URL. On production, this would be uploaded to cloud storage.');
+      }
+
+      // Call the parent handler to create the post
+      onCreatePost(postData);
+      
+      // Clear form after submission
+      setDescription('');
+      setImage(null);
+    } catch (error) {
+      console.error('Error creating post:', error);
+      Alert.alert('Error', 'Failed to create post. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="subtitle" style={styles.title}>Share a Moment</ThemedText>
       
-      <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
+      <TouchableOpacity 
+        style={styles.imageContainer} 
+        onPress={pickImage}
+        disabled={isLoading}
+      >
         {image ? (
           <Image source={{ uri: image }} style={styles.image} />
         ) : (
@@ -66,16 +108,35 @@ export default function CreatePostForm({ userId, onCreatePost }: CreatePostFormP
         onChangeText={setDescription}
         multiline
         maxLength={250}
+        editable={!isLoading}
       />
       
       <TouchableOpacity 
-        style={styles.button} 
+        style={[styles.button, isLoading && styles.buttonDisabled]} 
         onPress={handleSubmit}
+        disabled={isLoading}
       >
-        <ThemedText style={styles.buttonText}>
-          Share Post
-        </ThemedText>
+        {isLoading ? (
+          <ActivityIndicator color="#000" size="small" />
+        ) : (
+          <ThemedText style={styles.buttonText}>
+            Share Post
+          </ThemedText>
+        )}
       </TouchableOpacity>
+      
+      {/* Add debug info for development */}
+      {__DEV__ && image && (
+        <View style={styles.debugContainer}>
+          <ThemedText style={styles.debugTitle}>Debug Info:</ThemedText>
+          <ThemedText style={styles.debugText}>
+            Image URI: {image.substring(0, 50)}...
+          </ThemedText>
+          <ThemedText style={styles.debugText}>
+            User ID: {userId}
+          </ThemedText>
+        </View>
+      )}
     </ThemedView>
   );
 }
@@ -122,8 +183,25 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
   },
+  buttonDisabled: {
+    backgroundColor: '#cccccc',
+  },
   buttonText: {
     color: 'black',
     fontWeight: 'bold',
+  },
+  debugContainer: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#444',
+    borderRadius: 5,
+  },
+  debugTitle: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  debugText: {
+    fontSize: 12,
+    color: '#aaa',
   }
 }); 
