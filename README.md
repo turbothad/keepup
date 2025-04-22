@@ -1,50 +1,124 @@
-# Welcome to your Expo app 👋
+# KeepUp App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A full-stack social media application built with React Native (Expo), Express, and MongoDB.
 
-## Get started
+## Project Structure
 
-1. Install dependencies
+```
+/ (root)
+├── client          # React Native (Expo) mobile client
+├── server          # Express.js + MongoDB backend
+```
 
-   ```bash
+## Prerequisites
+
+- Node.js (14+)
+- npm or yarn
+- MongoDB Atlas account (or local MongoDB installation)
+- Expo CLI (`npm install -g expo-cli`)
+
+## Setup
+
+### Server Setup
+
+1. Navigate to the server directory:
+   ```
+   cd server
+   ```
+
+2. Install dependencies:
+   ```
    npm install
    ```
 
-2. Start the app
-
-   ```bash
-    npx expo start
+3. Create a `.env` file in the server directory with the following:
+   ```
+   MONGODB_URI=your_mongodb_atlas_connection_string
+   PORT=5001
+   JWT_SECRET=your_jwt_secret_key
+   NODE_ENV=development
    ```
 
-In the output, you'll find options to open the app in a
+4. Start the server:
+   ```
+   npm run dev
+   ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+The server will run on http://localhost:5001
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Client Setup
 
-## Get a fresh project
+1. Navigate to the client directory:
+   ```
+   cd client
+   ```
 
-When you're ready, run:
+2. Install dependencies:
+   ```
+   npm install
+   ```
 
-```bash
-npm run reset-project
+3. Start the Expo development server:
+   ```
+   npm start
+   ```
+
+4. Use the Expo Go app on your device to scan the QR code, or press 'i' to open in iOS simulator (requires Xcode) or 'a' for Android emulator (requires Android Studio).
+
+## Testing
+
+### Running Server Tests
+
+```
+cd server
+npm test
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+For watching mode:
+```
+npm run test:watch
+```
 
-## Learn more
+For test coverage:
+```
+npm run test:coverage
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### Running Client Tests
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+cd client
+npm test
+```
 
-## Join the community
+For watching mode:
+```
+npm run test:watch
+```
 
-Join our community of developers creating universal apps.
+For test coverage:
+```
+npm run test:coverage
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## API Documentation
+
+The API endpoints are available at `http://localhost:5001/api/`.
+
+Key endpoints:
+- `/api/health` - Health check endpoint
+- `/api/auth` - Authentication endpoints (login, register, etc.)
+- `/api/posts` - Post management
+- `/api/users` - User profiles and relationships
+
+## Development
+
+This project uses TypeScript for both client and server. 
+
+- Use `npm run lint` to check code quality
+- Make sure MongoDB is properly connected before working on server features
+- Check the client-server connection by running both and accessing the health endpoint
+
+## License
+
+[MIT License](LICENSE)
