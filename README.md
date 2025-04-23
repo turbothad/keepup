@@ -1,3 +1,81 @@
+# KeepUp
+
+A task management application with MongoDB Atlas integration.
+
+## Project Structure
+
+The project is structured as a monorepo:
+
+- `/apps/mobile` - The Expo mobile application
+- `/server` - The Express API server
+
+## Setup Instructions
+
+### Backend Setup
+
+1. Navigate to the server directory:
+   ```bash
+   cd server
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file with the following content:
+   ```
+   PORT=4000
+   MONGO_URI=mongodb+srv://<user>:<password>@cluster0.xxxxx.mongodb.net/keepup?retryWrites=true&w=majority
+   ```
+   Replace `<user>` and `<password>` with your MongoDB Atlas credentials.
+
+4. Start the server:
+   ```bash
+   npm run dev
+   ```
+
+### Mobile App Setup
+
+1. Navigate to the mobile app directory:
+   ```bash
+   cd apps/mobile
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file with the following content:
+   ```
+   EXPO_PUBLIC_API_URL=http://<your-local-ip>:4000
+   ```
+   Replace `<your-local-ip>` with your computer's local IP address.
+
+4. Start the app:
+   ```bash
+   npx expo start
+   ```
+
+## Deployment
+
+### Backend Deployment
+
+Deploy the backend to a service like Render, Railway, Fly.io, or Heroku (hobby).
+Make sure to set the `MONGO_URI` and `PORT` environment variables.
+
+### Mobile App Deployment
+
+Build the mobile app using EAS Build:
+
+```bash
+cd apps/mobile
+eas build --profile preview --platform all
+```
+
+After deploying the backend, update the `EXPO_PUBLIC_API_URL` in the `.env` file to point to the deployed HTTPS endpoint, commit, and rebuild.
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
