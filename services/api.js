@@ -17,6 +17,16 @@ const setAuthToken = async () => {
 };
 
 export const AuthService = {
+  setAuthToken: (token) => {
+    if (token) {
+      axios.defaults.headers.common['x-auth-token'] = token;
+    }
+  },
+  
+  clearAuthToken: () => {
+    delete axios.defaults.headers.common['x-auth-token'];
+  },
+
   register: async (userData) => {
     try {
       const res = await axios.post(`${API_URL}/users/register`, userData);
@@ -42,6 +52,16 @@ export const AuthService = {
   logout: async () => {
     await AsyncStorage.removeItem('@auth_token');
     setAuthToken();
+  },
+  
+  getProfile: async () => {
+    try {
+      await setAuthToken();
+      const res = await axios.get(`${API_URL}/users/me`);
+      return res.data;
+    } catch (err) {
+      throw err.response?.data || err.message;
+    }
   }
 };
 

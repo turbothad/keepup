@@ -1,101 +1,27 @@
-import React, { useState } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { ThemedText } from '../components/ThemedText';
-import { ThemedView } from '../components/ThemedView';
-import GroupCard from '../components/groups/GroupCard';
-import { Group, GroupPrivacy } from '../models/Group';
+import React, { useContext, useEffect } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { router } from 'expo-router';
+import { ActivityIndicator, View } from 'react-native';
+import { useThemeColor } from '../hooks/useThemeColor';
 
-// Sample data - in a real app this would come from an API or local storage
-const sampleGroups: Group[] = [
-  { 
-    id: '1', 
-    name: 'Family', 
-    description: 'Stay connected with family members',
-    createdAt: new Date(), 
-    updatedAt: new Date(), 
-    adminId: 'user1', 
-    members: ['user1', 'user2', 'user3', 'user4', 'user5'],
-    settings: {
-      privacy: GroupPrivacy.PRIVATE,
-      allowMemberPosts: true,
-      allowMemberInvites: true
-    },
-    avatar: 'https://via.placeholder.com/60'
-  },
-  { 
-    id: '2', 
-    name: 'College Friends', 
-    description: 'Keeping in touch with college buddies',
-    createdAt: new Date(), 
-    updatedAt: new Date(), 
-    adminId: 'user1', 
-    members: ['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7', 'user8'],
-    settings: {
-      privacy: GroupPrivacy.PUBLIC,
-      allowMemberPosts: true,
-      allowMemberInvites: true
+export default function IndexPage() {
+  const { loading, isAuthenticated } = useContext(AuthContext);
+  const backgroundColor = useThemeColor({}, 'background');
+  const textColor = useThemeColor({}, 'text');
+
+  useEffect(() => {
+    if (!loading) {
+      if (isAuthenticated()) {
+        router.replace('/(tabs)' as any);
+      } else {
+        router.replace('/auth');
+      }
     }
-  },
-  { 
-    id: '3', 
-    name: 'Work Team', 
-    description: 'Work-related updates and discussions',
-    createdAt: new Date(), 
-    updatedAt: new Date(), 
-    adminId: 'user2', 
-    members: ['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7', 'user8', 'user9', 'user10', 'user11', 'user12'],
-    settings: {
-      privacy: GroupPrivacy.SECRET,
-      allowMemberPosts: false,
-      allowMemberInvites: false
-    },
-    avatar: 'https://via.placeholder.com/60'
-  },
-];
-
-export default function Index() {
-  const handleGroupPress = (groupId: string) => {
-    console.log(`Group pressed: ${groupId}`);
-    // Navigation would go here in a real app
-  };
+  }, [loading, isAuthenticated]);
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>KeepUp</ThemedText>
-      <ThemedText style={styles.subtitle}>Your Groups</ThemedText>
-      
-      <FlatList
-        data={sampleGroups}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <GroupCard 
-            group={item} 
-            memberCount={item.members.length}
-            onPress={handleGroupPress}
-          />
-        )}
-        style={styles.list}
-      />
-    </ThemedView>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor }}>
+      <ActivityIndicator size="large" color={textColor} />
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#000',
-  },
-  title: {
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  subtitle: {
-    marginBottom: 20,
-    fontSize: 18,
-  },
-  list: {
-    width: '100%',
-    paddingHorizontal: 20,
-  }
-});
