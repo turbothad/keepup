@@ -1,50 +1,107 @@
-# Welcome to your Expo app 👋
+# KeepUp App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+KeepUp is a social media app that allows users to connect with friends and share daily posts. The app is built with Expo and React Native for the frontend, with a MongoDB-based Node.js backend.
 
-## Get started
+## Project Structure
 
-1. Install dependencies
+```
+keepup/                # Frontend (Expo/React Native)
+├── app/               # Main application screens (Expo Router)
+├── components/        # Reusable UI components
+├── models/            # TypeScript interfaces for data models
+├── services/          # API services for backend communication
+├── hooks/             # Custom React hooks
+└── constants/         # App-wide constants and theme
 
+keepupServer/          # Backend (Node.js/Express)
+├── models/            # MongoDB schemas
+├── routes/            # API endpoints
+└── middleware/        # Authentication and other middleware
+```
+
+## Getting Started
+
+### Frontend Setup
+
+1. Install dependencies:
    ```bash
+   cd keepup
    npm install
    ```
 
-2. Start the app
-
+2. Start the Expo app:
    ```bash
-    npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+3. Open the app in:
+   - iOS Simulator
+   - Android Emulator
+   - Scan QR code with Expo Go on your device
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Backend Setup
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. Install dependencies:
+   ```bash
+   cd keepupServer
+   npm install
+   ```
 
-## Get a fresh project
+2. Set up environment variables:
+   Create a `.env` file with:
+   ```
+   MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/keepup
+   JWT_SECRET=your_jwt_secret_key
+   PORT=818
+   ```
 
-When you're ready, run:
+3. Start the server:
+   ```bash
+   npm start
+   ```
 
-```bash
-npm run reset-project
-```
+## Testing Server Connectivity
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+A debug screen is included to test connectivity with the backend:
 
-## Learn more
+1. Launch the app and navigate to the Debug screen
+2. The Server Connection Test will attempt to connect to your backend
+3. Use the API Tests to verify specific endpoints
 
-To learn more about developing your project with Expo, look at the following resources:
+For physical devices, update the API_URL in these files:
+- `services/api.js`
+- `components/ServerTest.js`
+- `components/ApiTester.js`
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Replace `localhost` with your computer's IP address.
 
-## Join the community
+## Data Models
 
-Join our community of developers creating universal apps.
+The app uses the following key data models:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **User**: User profiles, authentication, and preferences
+- **Post**: Daily posts with images and descriptions
+- **Group**: Groups of users for shared content
+- **Comment**: Comments on posts
+
+## Features
+
+- User authentication (register, login, logout)
+- Create and view daily posts
+- Social connections with friends
+- Group-based content sharing
+- Modern, clean UI
+
+## Development Notes
+
+- Backend runs locally on port 818 by default
+- CORS is configured to allow connections from Expo development servers
+- MongoDB is used for data persistence
+- JWT authentication is implemented for API security
+
+## Next Steps
+
+- Deploy backend to production (Vercel, Heroku, etc.)
+- Implement real-time notifications
+- Add image upload capabilities
+- Create group management features
