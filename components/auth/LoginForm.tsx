@@ -1,46 +1,31 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
-import { User } from '../../models/User';
 
-interface SignupFormProps {
-  onSignup: (user: Partial<User>) => void;
-  onSwitchToLogin: () => void;
+interface LoginFormProps {
+  onLogin: (credentials: { email: string; password: string }) => void;
+  onSwitchToSignup: () => void;
 }
 
-export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProps) {
+export default function LoginForm({ onLogin, onSwitchToSignup }: LoginFormProps) {
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSignup = () => {
+  const handleLogin = () => {
     // Basic validation
-    if (!email || !username || !password) {
+    if (!email || !password) {
       setError('All fields are required');
       return;
     }
     
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-    
-    // Create new user object
-    const newUser: Partial<User> = {
-      email,
-      username,
-      password, // This would be hashed on the backend
-    };
-    
-    onSignup(newUser);
+    onLogin({ email, password });
   };
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>Join KeepUp</ThemedText>
+      <ThemedText type="title" style={styles.title}>Welcome to KeepUp</ThemedText>
       
       <TextInput
         style={styles.input}
@@ -54,15 +39,6 @@ export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProp
       
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        placeholderTextColor="#777"
-        value={username}
-        onChangeText={setUsername}
-        autoCapitalize="none"
-      />
-      
-      <TextInput
-        style={styles.input}
         placeholder="Password"
         placeholderTextColor="#777"
         value={password}
@@ -70,30 +46,21 @@ export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProp
         secureTextEntry
       />
       
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        placeholderTextColor="#777"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
-      
       {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
       
       <TouchableOpacity 
         style={styles.button} 
-        onPress={handleSignup}
+        onPress={handleLogin}
       >
-        <ThemedText style={styles.buttonText}>Sign Up</ThemedText>
+        <ThemedText style={styles.buttonText}>Log In</ThemedText>
       </TouchableOpacity>
       
       <TouchableOpacity 
         style={styles.switchButton} 
-        onPress={onSwitchToLogin}
+        onPress={onSwitchToSignup}
       >
         <ThemedText style={styles.switchText}>
-          Already have an account? Log in
+          New to KeepUp? Sign up
         </ThemedText>
       </TouchableOpacity>
     </ThemedView>
