@@ -2,13 +2,14 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useThemeColor } from '../hooks/useThemeColor';
-
+import { AuthProvider } from '../context/AuthContext';
 export default function AppLayout() {
   const iconColor = useThemeColor({}, 'icon');
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
 
   return (
+    <AuthProvider>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: textColor,
@@ -46,5 +47,6 @@ export default function AppLayout() {
         }}
       />
     </Tabs>
+    </AuthProvider>
   );
 }
