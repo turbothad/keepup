@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { router } from 'expo-router';
 import ServerTest from '../../components/ServerTest';
 import ApiTester from '../../components/ApiTester';
+import AuthTest from '../../components/AuthTest';
 
 export default function DebugScreen() {
   const { user, logout } = useContext(AuthContext);
@@ -39,6 +40,12 @@ export default function DebugScreen() {
             color="#FF6347"
           />
         </ThemedView>
+        
+        <ThemedText type="subtitle" style={styles.sectionTitle}>JWT Authentication Test:</ThemedText>
+        <ThemedView style={styles.card}>
+          <AuthTest />
+        </ThemedView>
+        
         <ServerTest />
         <ApiTester />
       </ScrollView>

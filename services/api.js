@@ -76,10 +76,81 @@ export const PostService = {
     }
   },
   
+  getFriendsPosts: async () => {
+    await setAuthToken();
+    try {
+      // If your backend has a dedicated endpoint for friends' posts, use it:
+      // const res = await axios.get(`${API_URL}/posts/friends`);
+      
+      // Otherwise, we'll fetch all posts and filter client-side
+      const res = await axios.get(`${API_URL}/posts`);
+      return res.data;
+    } catch (err) {
+      throw err.response?.data || err.message;
+    }
+  },
+  
   createPost: async (postData) => {
     await setAuthToken();
     try {
       const res = await axios.post(`${API_URL}/posts`, postData);
+      return res.data;
+    } catch (err) {
+      throw err.response?.data || err.message;
+    }
+  },
+  
+  likePost: async (postId) => {
+    await setAuthToken();
+    try {
+      const res = await axios.put(`${API_URL}/posts/like/${postId}`);
+      return res.data;
+    } catch (err) {
+      throw err.response?.data || err.message;
+    }
+  }
+};
+
+export const UserService = {
+  getProfile: async (userId = null) => {
+    await setAuthToken();
+    try {
+      if (userId) {
+        const res = await axios.get(`${API_URL}/users/${userId}`);
+        return res.data;
+      } else {
+        const res = await axios.get(`${API_URL}/users/me`);
+        return res.data;
+      }
+    } catch (err) {
+      throw err.response?.data || err.message;
+    }
+  },
+  
+  addFriend: async (friendId) => {
+    await setAuthToken();
+    try {
+      const res = await axios.put(`${API_URL}/users/friends/${friendId}`);
+      return res.data;
+    } catch (err) {
+      throw err.response?.data || err.message;
+    }
+  },
+  
+  removeFriend: async (friendId) => {
+    await setAuthToken();
+    try {
+      const res = await axios.delete(`${API_URL}/users/friends/${friendId}`);
+      return res.data;
+    } catch (err) {
+      throw err.response?.data || err.message;
+    }
+  },
+  
+  searchUsers: async (query) => {
+    await setAuthToken();
+    try {
+      const res = await axios.get(`${API_URL}/users/search?query=${query}`);
       return res.data;
     } catch (err) {
       throw err.response?.data || err.message;
