@@ -7,49 +7,62 @@ import { Group, GroupPrivacy } from '../../models/Group';
 
 // Sample data - in a real app this would come from an API or local storage
 const sampleGroups: Group[] = [
-  { 
-    id: '1', 
-    name: 'Family', 
+  {
+    id: '1',
+    name: 'Family',
     description: 'Stay connected with family members',
-    createdAt: new Date(), 
-    updatedAt: new Date(), 
-    adminId: 'user1', 
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    adminId: 'user1',
     members: ['user1', 'user2', 'user3', 'user4', 'user5'],
     settings: {
       privacy: GroupPrivacy.PRIVATE,
       allowMemberPosts: true,
-      allowMemberInvites: true
+      allowMemberInvites: true,
     },
-    avatar: 'https://via.placeholder.com/60'
+    avatar: 'https://via.placeholder.com/60',
   },
-  { 
-    id: '2', 
-    name: 'College Friends', 
+  {
+    id: '2',
+    name: 'College Friends',
     description: 'Keeping in touch with college buddies',
-    createdAt: new Date(), 
-    updatedAt: new Date(), 
-    adminId: 'user1', 
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    adminId: 'user1',
     members: ['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7', 'user8'],
     settings: {
       privacy: GroupPrivacy.PUBLIC,
       allowMemberPosts: true,
-      allowMemberInvites: true
-    }
+      allowMemberInvites: true,
+    },
   },
-  { 
-    id: '3', 
-    name: 'Work Team', 
+  {
+    id: '3',
+    name: 'Work Team',
     description: 'Work-related updates and discussions',
-    createdAt: new Date(), 
-    updatedAt: new Date(), 
-    adminId: 'user2', 
-    members: ['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7', 'user8', 'user9', 'user10', 'user11', 'user12'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    adminId: 'user2',
+    members: [
+      'user1',
+      'user2',
+      'user3',
+      'user4',
+      'user5',
+      'user6',
+      'user7',
+      'user8',
+      'user9',
+      'user10',
+      'user11',
+      'user12',
+    ],
     settings: {
       privacy: GroupPrivacy.SECRET,
       allowMemberPosts: false,
-      allowMemberInvites: false
+      allowMemberInvites: false,
     },
-    avatar: 'https://via.placeholder.com/60'
+    avatar: 'https://via.placeholder.com/60',
   },
 ];
 
@@ -61,18 +74,16 @@ export default function GroupsScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>KeepUp</ThemedText>
+      <ThemedText type="title" style={styles.title}>
+        KeepUp
+      </ThemedText>
       <ThemedText style={styles.subtitle}>Your Groups</ThemedText>
-      
+
       <FlatList
         data={sampleGroups}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <GroupCard 
-            group={item} 
-            memberCount={item.members.length}
-            onPress={handleGroupPress}
-          />
+          <GroupCard group={item} memberCount={item.members.length} onPress={handleGroupPress} />
         )}
         style={styles.list}
       />
@@ -82,20 +93,20 @@ export default function GroupsScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     backgroundColor: '#000',
-  },
-  title: {
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  subtitle: {
-    marginBottom: 20,
-    fontSize: 18,
+    flex: 1,
   },
   list: {
-    width: '100%',
     paddingHorizontal: 20,
-  }
-}); 
+    width: '100%',
+  },
+  subtitle: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  title: {
+    marginBottom: 10,
+    marginTop: 20,
+  },
+});

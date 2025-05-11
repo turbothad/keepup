@@ -20,8 +20,10 @@ export default function CreatePostScreen() {
   return (
     <ThemedView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <ThemedText type="title" style={styles.screenTitle}>Create New Post</ThemedText>
-        
+        <ThemedText type="title" style={styles.screenTitle}>
+          Create New Post
+        </ThemedText>
+
         <ThemedView style={styles.inputContainer}>
           <ThemedText>Title</ThemedText>
           <TextInput
@@ -32,7 +34,7 @@ export default function CreatePostScreen() {
             placeholderTextColor="#666"
           />
         </ThemedView>
-        
+
         <ThemedView style={styles.inputContainer}>
           <ThemedText>Content</ThemedText>
           <TextInput
@@ -46,7 +48,7 @@ export default function CreatePostScreen() {
             textAlignVertical="top"
           />
         </ThemedView>
-        
+
         <ThemedView style={styles.buttonContainer}>
           <Button
             title="Post"
@@ -60,31 +62,31 @@ export default function CreatePostScreen() {
 }
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    marginTop: 20,
+  },
   container: {
     flex: 1,
     padding: 20,
   },
-  scrollView: {
-    flex: 1,
+  contentInput: {
+    height: 150,
   },
-  screenTitle: {
-    marginBottom: 20,
+  input: {
+    borderColor: '#ccc',
+    borderRadius: 5,
+    borderWidth: 1,
+    color: '#333',
+    marginTop: 5,
+    padding: 10,
   },
   inputContainer: {
     marginBottom: 20,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginTop: 5,
-    color: '#333',
+  screenTitle: {
+    marginBottom: 20,
   },
-  contentInput: {
-    height: 150,
+  scrollView: {
+    flex: 1,
   },
-  buttonContainer: {
-    marginTop: 20,
-  }
-}); 
+});

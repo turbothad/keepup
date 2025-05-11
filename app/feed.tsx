@@ -21,16 +21,16 @@ const sampleUsers: User[] = [
         newComments: true,
         friendRequests: true,
         groupInvites: true,
-        dailyReminder: true
+        dailyReminder: true,
       },
       privacy: {
         profileVisibility: 'public',
-        allowFriendRequests: true
-      }
+        allowFriendRequests: true,
+      },
     },
     hasPostedToday: true,
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   },
   {
     id: 'user2',
@@ -45,16 +45,16 @@ const sampleUsers: User[] = [
         newComments: true,
         friendRequests: true,
         groupInvites: true,
-        dailyReminder: false
+        dailyReminder: false,
       },
       privacy: {
         profileVisibility: 'friends',
-        allowFriendRequests: true
-      }
+        allowFriendRequests: true,
+      },
     },
     hasPostedToday: true,
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   },
   {
     id: 'user3',
@@ -69,17 +69,17 @@ const sampleUsers: User[] = [
         newComments: true,
         friendRequests: true,
         groupInvites: true,
-        dailyReminder: true
+        dailyReminder: true,
       },
       privacy: {
         profileVisibility: 'public',
-        allowFriendRequests: true
-      }
+        allowFriendRequests: true,
+      },
     },
     hasPostedToday: true,
     createdAt: new Date(),
-    updatedAt: new Date()
-  }
+    updatedAt: new Date(),
+  },
 ];
 
 // Sample posts data
@@ -94,7 +94,7 @@ const samplePosts: Post[] = [
     groupId: '1',
     comments: [],
     likes: ['user2', 'user3'],
-    savedBy: ['user2']
+    savedBy: ['user2'],
   },
   {
     id: '2',
@@ -106,7 +106,7 @@ const samplePosts: Post[] = [
     groupId: '3',
     comments: [],
     likes: ['user1', 'user3'],
-    savedBy: []
+    savedBy: [],
   },
   {
     id: '3',
@@ -118,7 +118,7 @@ const samplePosts: Post[] = [
     groupId: '2',
     comments: [],
     likes: ['user1'],
-    savedBy: ['user1', 'user2']
+    savedBy: ['user1', 'user2'],
   },
 ];
 
@@ -146,14 +146,16 @@ export default function Feed() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>Feed</ThemedText>
+      <ThemedText type="title" style={styles.title}>
+        Feed
+      </ThemedText>
       <ThemedText style={styles.subtitle}>Your chronological timeline</ThemedText>
-      
+
       <FlatList
         data={samplePosts}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <PostCard 
+          <PostCard
             post={item}
             author={findAuthor(item.authorId)}
             currentUserId={currentUserId}
@@ -169,20 +171,20 @@ export default function Feed() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     backgroundColor: '#000',
-  },
-  title: {
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  subtitle: {
-    marginBottom: 20,
-    fontSize: 18,
+    flex: 1,
   },
   list: {
-    width: '100%',
     paddingHorizontal: 10,
-  }
-}); 
+    width: '100%',
+  },
+  subtitle: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  title: {
+    marginBottom: 10,
+    marginTop: 20,
+  },
+});

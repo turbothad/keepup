@@ -24,12 +24,14 @@ keepupServer/          # Backend (Node.js/Express)
 ### Frontend Setup
 
 1. Install dependencies:
+
    ```bash
    cd keepup
    npm install
    ```
 
 2. Start the Expo app:
+
    ```bash
    npm start
    ```
@@ -42,6 +44,7 @@ keepupServer/          # Backend (Node.js/Express)
 ### Backend Setup
 
 1. Install dependencies:
+
    ```bash
    cd keepupServer
    npm install
@@ -49,6 +52,7 @@ keepupServer/          # Backend (Node.js/Express)
 
 2. Set up environment variables:
    Create a `.env` file with:
+
    ```
    MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/keepup
    JWT_SECRET=your_jwt_secret_key
@@ -69,6 +73,7 @@ A debug screen is included to test connectivity with the backend:
 3. Use the API Tests to verify specific endpoints
 
 For physical devices, update the API_URL in these files:
+
 - `services/api.js`
 - `components/ServerTest.js`
 - `components/ApiTester.js`

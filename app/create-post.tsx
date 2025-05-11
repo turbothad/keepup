@@ -19,41 +19,41 @@ export default function CreatePost() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>Create Post</ThemedText>
+      <ThemedText type="title" style={styles.title}>
+        Create Post
+      </ThemedText>
       <ThemedText style={styles.subtitle}>Share a moment from today</ThemedText>
-      
-      <CreatePostForm 
+
+      <CreatePostForm
         userId={currentUserId}
         hasPostedToday={hasPostedToday}
         onCreatePost={handleCreatePost}
       />
-      
-      <ThemedText style={styles.reminder}>
-        Remember, you can post only once a day.
-      </ThemedText>
+
+      <ThemedText style={styles.reminder}>Remember, you can post only once a day.</ThemedText>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     backgroundColor: '#000',
+    flex: 1,
     padding: 20,
   },
-  title: {
-    marginTop: 20,
-    marginBottom: 10,
+  reminder: {
+    fontSize: 14,
+    marginTop: 30,
+    opacity: 0.7,
+    textAlign: 'center',
   },
   subtitle: {
-    marginBottom: 30,
     fontSize: 18,
+    marginBottom: 30,
   },
-  reminder: {
-    marginTop: 30,
-    textAlign: 'center',
-    opacity: 0.7,
-    fontSize: 14,
-  }
-}); 
+  title: {
+    marginBottom: 10,
+    marginTop: 20,
+  },
+});

@@ -19,16 +19,16 @@ const currentUser: User = {
       newComments: true,
       friendRequests: true,
       groupInvites: true,
-      dailyReminder: true
+      dailyReminder: true,
     },
     privacy: {
       profileVisibility: 'public',
-      allowFriendRequests: true
-    }
+      allowFriendRequests: true,
+    },
   },
   hasPostedToday: false,
   createdAt: new Date('2023-01-15'),
-  updatedAt: new Date()
+  updatedAt: new Date(),
 };
 
 // Setting list items with icons
@@ -51,14 +51,16 @@ export default function Profile() {
     <ScrollView style={styles.scrollView}>
       <ThemedView style={styles.container}>
         <View style={styles.header}>
-          <Image 
-            source={{ uri: currentUser.profilePicture || 'https://via.placeholder.com/120' }} 
-            style={styles.profilePicture} 
+          <Image
+            source={{ uri: currentUser.profilePicture || 'https://via.placeholder.com/120' }}
+            style={styles.profilePicture}
           />
-          
-          <ThemedText type="title" style={styles.username}>{currentUser.username}</ThemedText>
+
+          <ThemedText type="title" style={styles.username}>
+            {currentUser.username}
+          </ThemedText>
           <ThemedText style={styles.email}>{currentUser.email}</ThemedText>
-          
+
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
               <ThemedText type="defaultSemiBold">{currentUser.friends.length}</ThemedText>
@@ -70,16 +72,22 @@ export default function Profile() {
             </View>
           </View>
         </View>
-        
-        <ThemedText type="subtitle" style={styles.sectionTitle}>Settings</ThemedText>
-        
-        {settingItems.map((item) => (
-          <TouchableOpacity 
+
+        <ThemedText type="subtitle" style={styles.sectionTitle}>
+          Settings
+        </ThemedText>
+
+        {settingItems.map(item => (
+          <TouchableOpacity
             key={item.id}
             style={styles.settingItem}
-            onPress={() => handleSettingPress(item.id)}
-          >
-            <MaterialIcons name={item.icon as any} size={24} color="white" style={styles.settingIcon} />
+            onPress={() => handleSettingPress(item.id)}>
+            <MaterialIcons
+              name={item.icon as any}
+              size={24}
+              color="white"
+              style={styles.settingIcon}
+            />
             <ThemedText style={styles.settingLabel}>{item.label}</ThemedText>
             <MaterialIcons name="chevron-right" size={24} color="white" />
           </TouchableOpacity>
@@ -90,14 +98,14 @@ export default function Profile() {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
   container: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     padding: 20,
+  },
+  email: {
+    marginBottom: 20,
+    opacity: 0.7,
   },
   header: {
     alignItems: 'center',
@@ -105,23 +113,34 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   profilePicture: {
-    width: 120,
-    height: 120,
     borderRadius: 60,
+    height: 120,
     marginBottom: 15,
+    width: 120,
   },
-  username: {
-    marginBottom: 5,
+  scrollView: {
+    backgroundColor: '#000',
+    flex: 1,
   },
-  email: {
-    marginBottom: 20,
-    opacity: 0.7,
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '80%',
+  sectionTitle: {
+    alignSelf: 'flex-start',
+    marginBottom: 15,
     marginTop: 10,
+  },
+  settingIcon: {
+    marginRight: 15,
+  },
+  settingItem: {
+    alignItems: 'center',
+    backgroundColor: '#111',
+    borderRadius: 10,
+    flexDirection: 'row',
+    marginBottom: 10,
+    padding: 15,
+    width: '100%',
+  },
+  settingLabel: {
+    flex: 1,
   },
   statItem: {
     alignItems: 'center',
@@ -130,24 +149,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     opacity: 0.7,
   },
-  sectionTitle: {
-    alignSelf: 'flex-start',
-    marginBottom: 15,
-    marginTop: 10,
-  },
-  settingItem: {
+  statsContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#111',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    width: '100%',
+    justifyContent: 'space-around',
+    marginTop: 10,
+    width: '80%',
   },
-  settingIcon: {
-    marginRight: 15,
+  username: {
+    marginBottom: 5,
   },
-  settingLabel: {
-    flex: 1,
-  }
-}); 
+});
