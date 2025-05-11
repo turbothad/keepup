@@ -7,7 +7,7 @@
 export enum UserTheme {
   DARK = 'dark',
   LIGHT = 'light',
-  SYSTEM = 'system'
+  SYSTEM = 'system',
 }
 
 // User notification settings
@@ -38,14 +38,14 @@ export interface User {
   email: string;
   password?: string; // Only used on the backend, never stored in frontend
   profilePicture?: string; // URL to profile picture
-  
+
   // Relationships
   friends: string[]; // Array of friend user IDs
   groups: string[]; // Array of group IDs the user belongs to
-  
+
   // Additional fields
   settings: UserSettings;
   hasPostedToday: boolean; // Flag to track if user has posted for the day
   createdAt: Date;
   updatedAt: Date;
-} 
+}

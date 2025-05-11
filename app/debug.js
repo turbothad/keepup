@@ -8,8 +8,10 @@ import ApiTester from '../components/ApiTester';
 export default function Debug() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>Debug</ThemedText>
-      
+      <ThemedText type="title" style={styles.title}>
+        Debug
+      </ThemedText>
+
       <ScrollView style={styles.scrollView}>
         <ServerTest />
         <ApiTester />
@@ -23,12 +25,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
   },
-  title: {
-    marginTop: 20,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
   scrollView: {
     flex: 1,
   },
-}); 
+  title: {
+    marginBottom: 20,
+    marginTop: 20,
+    textAlign: 'center',
+  },
+});

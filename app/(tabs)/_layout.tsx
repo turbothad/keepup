@@ -5,11 +5,13 @@ import { useThemeColor } from '../../hooks/useThemeColor';
 import { AuthContext } from '../../context/AuthContext';
 import { router } from 'expo-router';
 import { ActivityIndicator, View } from 'react-native';
+import { commonStyles } from '../../constants/Styles';
 
 export default function TabsLayout() {
   const iconColor = useThemeColor({}, 'icon');
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
+  const tabIconDefault = useThemeColor({}, 'tabIconDefault');
   const { isAuthenticated, loading } = useContext(AuthContext);
 
   // Handle authentication changes with useEffect instead of conditional returns
@@ -22,7 +24,7 @@ export default function TabsLayout() {
   // Show loading indicator while checking auth
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor }}>
+      <View style={[commonStyles.centerContent, { backgroundColor }]}>
         <ActivityIndicator size="large" color={textColor} />
       </View>
     );
@@ -34,7 +36,7 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: textColor,
-        tabBarInactiveTintColor: useThemeColor({}, 'tabIconDefault'),
+        tabBarInactiveTintColor: tabIconDefault,
         tabBarStyle: { backgroundColor },
         headerStyle: { backgroundColor },
         headerTintColor: textColor,
@@ -76,4 +78,4 @@ export default function TabsLayout() {
       />
     </Tabs>
   );
-} 
+}

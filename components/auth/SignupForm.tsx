@@ -22,26 +22,28 @@ export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProp
       setError('All fields are required');
       return;
     }
-    
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-    
+
     // Create new user object
     const newUser: Partial<User> = {
       email,
       username,
       password, // This would be hashed on the backend
     };
-    
+
     onSignup(newUser);
   };
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>Join KeepUp</ThemedText>
-      
+      <ThemedText type="title" style={styles.title}>
+        Join KeepUp
+      </ThemedText>
+
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -51,7 +53,7 @@ export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProp
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      
+
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -60,7 +62,7 @@ export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProp
         onChangeText={setUsername}
         autoCapitalize="none"
       />
-      
+
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -69,7 +71,7 @@ export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProp
         onChangeText={setPassword}
         secureTextEntry
       />
-      
+
       <TextInput
         style={styles.input}
         placeholder="Confirm Password"
@@ -78,37 +80,38 @@ export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProp
         onChangeText={setConfirmPassword}
         secureTextEntry
       />
-      
+
       {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
-      
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={handleSignup}
-      >
+
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <ThemedText style={styles.buttonText}>Sign Up</ThemedText>
       </TouchableOpacity>
-      
-      <TouchableOpacity 
-        style={styles.switchButton} 
-        onPress={onSwitchToLogin}
-      >
-        <ThemedText style={styles.switchText}>
-          Already have an account? Log in
-        </ThemedText>
+
+      <TouchableOpacity style={styles.switchButton} onPress={onSwitchToLogin}>
+        <ThemedText style={styles.switchText}>Already have an account? Log in</ThemedText>
       </TouchableOpacity>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 15,
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
   container: {
     padding: 20,
     width: '100%',
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: 'center',
+  error: {
+    color: 'red',
+    marginBottom: 15,
   },
   input: {
     backgroundColor: '#333',
@@ -118,25 +121,16 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 10,
   },
-  button: {
-    backgroundColor: 'white',
-    borderRadius: 5,
-    padding: 15,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  error: {
-    color: 'red',
-    marginBottom: 15,
-  },
   switchButton: {
-    marginTop: 20,
     alignItems: 'center',
+    marginTop: 20,
   },
   switchText: {
     textDecorationLine: 'underline',
-  }
-}); 
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+});

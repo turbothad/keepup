@@ -19,14 +19,16 @@ export default function LoginForm({ onLogin, onSwitchToSignup }: LoginFormProps)
       setError('All fields are required');
       return;
     }
-    
+
     onLogin({ email, password });
   };
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>Welcome to KeepUp</ThemedText>
-      
+      <ThemedText type="title" style={styles.title}>
+        Welcome to KeepUp
+      </ThemedText>
+
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -36,7 +38,7 @@ export default function LoginForm({ onLogin, onSwitchToSignup }: LoginFormProps)
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      
+
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -45,37 +47,38 @@ export default function LoginForm({ onLogin, onSwitchToSignup }: LoginFormProps)
         onChangeText={setPassword}
         secureTextEntry
       />
-      
+
       {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
-      
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={handleLogin}
-      >
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <ThemedText style={styles.buttonText}>Log In</ThemedText>
       </TouchableOpacity>
-      
-      <TouchableOpacity 
-        style={styles.switchButton} 
-        onPress={onSwitchToSignup}
-      >
-        <ThemedText style={styles.switchText}>
-          New to KeepUp? Sign up
-        </ThemedText>
+
+      <TouchableOpacity style={styles.switchButton} onPress={onSwitchToSignup}>
+        <ThemedText style={styles.switchText}>New to KeepUp? Sign up</ThemedText>
       </TouchableOpacity>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 15,
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
   container: {
     padding: 20,
     width: '100%',
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: 'center',
+  error: {
+    color: 'red',
+    marginBottom: 15,
   },
   input: {
     backgroundColor: '#333',
@@ -85,25 +88,16 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 10,
   },
-  button: {
-    backgroundColor: 'white',
-    borderRadius: 5,
-    padding: 15,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  error: {
-    color: 'red',
-    marginBottom: 15,
-  },
   switchButton: {
-    marginTop: 20,
     alignItems: 'center',
+    marginTop: 20,
   },
   switchText: {
     textDecorationLine: 'underline',
-  }
-}); 
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+});
