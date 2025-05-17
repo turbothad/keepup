@@ -29,7 +29,16 @@ const sampleGroups: Group[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     adminId: 'user1',
-    members: ['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7', 'user8'],
+    members: [
+      'user1',
+      'user2',
+      'user3',
+      'user4',
+      'user5',
+      'user6',
+      'user7',
+      'user8',
+    ],
     settings: {
       privacy: GroupPrivacy.PUBLIC,
       allowMemberPosts: true,
@@ -81,9 +90,13 @@ export default function GroupsScreen() {
 
       <FlatList
         data={sampleGroups}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <GroupCard group={item} memberCount={item.members.length} onPress={handleGroupPress} />
+          <GroupCard
+            group={item}
+            memberCount={item.members.length}
+            onPress={handleGroupPress}
+          />
         )}
         style={styles.list}
       />

@@ -10,7 +10,11 @@ interface GroupCardProps {
   onPress: (groupId: string) => void;
 }
 
-export default function GroupCard({ group, memberCount, onPress }: GroupCardProps) {
+export default function GroupCard({
+  group,
+  memberCount,
+  onPress,
+}: GroupCardProps) {
   const getPrivacyIcon = (privacy: GroupPrivacy) => {
     switch (privacy) {
       case GroupPrivacy.PUBLIC:

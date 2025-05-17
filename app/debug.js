@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { ThemedText } from '../components/ThemedText';
+import { StyleSheet, ScrollView, Text } from 'react-native';
 import { ThemedView } from '../components/ThemedView';
 import ServerTest from '../components/ServerTest';
 import ApiTester from '../components/ApiTester';
@@ -8,10 +7,7 @@ import ApiTester from '../components/ApiTester';
 export default function Debug() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>
-        Debug
-      </ThemedText>
-
+      <Text style={styles.title}>Debug</Text>
       <ScrollView style={styles.scrollView}>
         <ServerTest />
         <ApiTester />

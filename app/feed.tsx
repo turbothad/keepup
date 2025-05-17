@@ -3,124 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { ThemedText } from '../components/ThemedText';
 import { ThemedView } from '../components/ThemedView';
 import PostCard from '../components/posts/PostCard';
-import { Post } from '../models/Post';
-import { User, UserTheme } from '../models/User';
-
-// Sample users data
-const sampleUsers: User[] = [
-  {
-    id: 'user1',
-    username: 'John Doe',
-    email: 'john@example.com',
-    profilePicture: 'https://via.placeholder.com/40',
-    friends: ['user2', 'user3'],
-    groups: ['1', '2'],
-    settings: {
-      theme: UserTheme.DARK,
-      notifications: {
-        newComments: true,
-        friendRequests: true,
-        groupInvites: true,
-        dailyReminder: true,
-      },
-      privacy: {
-        profileVisibility: 'public',
-        allowFriendRequests: true,
-      },
-    },
-    hasPostedToday: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: 'user2',
-    username: 'Jane Smith',
-    email: 'jane@example.com',
-    profilePicture: 'https://via.placeholder.com/40',
-    friends: ['user1', 'user3'],
-    groups: ['3'],
-    settings: {
-      theme: UserTheme.DARK,
-      notifications: {
-        newComments: true,
-        friendRequests: true,
-        groupInvites: true,
-        dailyReminder: false,
-      },
-      privacy: {
-        profileVisibility: 'friends',
-        allowFriendRequests: true,
-      },
-    },
-    hasPostedToday: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: 'user3',
-    username: 'Mike Johnson',
-    email: 'mike@example.com',
-    profilePicture: 'https://via.placeholder.com/40',
-    friends: ['user1', 'user2'],
-    groups: ['1', '2'],
-    settings: {
-      theme: UserTheme.DARK,
-      notifications: {
-        newComments: true,
-        friendRequests: true,
-        groupInvites: true,
-        dailyReminder: true,
-      },
-      privacy: {
-        profileVisibility: 'public',
-        allowFriendRequests: true,
-      },
-    },
-    hasPostedToday: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
-// Sample posts data
-const samplePosts: Post[] = [
-  {
-    id: '1',
-    imageUrl: require('../assets/images/icon.png'),
-    description: 'Just had a great day hiking with the family!',
-    createdAt: new Date(Date.now() - 3600000), // 1 hour ago
-    updatedAt: new Date(Date.now() - 3600000),
-    authorId: 'user1',
-    groupId: '1',
-    comments: [],
-    likes: ['user2', 'user3'],
-    savedBy: ['user2'],
-  },
-  {
-    id: '2',
-    imageUrl: require('../assets/images/react-logo.png'),
-    description: 'Our team just shipped a major feature. So proud of everyone!',
-    createdAt: new Date(Date.now() - 7200000), // 2 hours ago
-    updatedAt: new Date(Date.now() - 7200000),
-    authorId: 'user2',
-    groupId: '3',
-    comments: [],
-    likes: ['user1', 'user3'],
-    savedBy: [],
-  },
-  {
-    id: '3',
-    imageUrl: require('../assets/images/splash-icon.png'),
-    description: 'Reuniting with my college friends next weekend!',
-    createdAt: new Date(Date.now() - 86400000), // 1 day ago
-    updatedAt: new Date(Date.now() - 86400000),
-    authorId: 'user3',
-    groupId: '2',
-    comments: [],
-    likes: ['user1'],
-    savedBy: ['user1', 'user2'],
-  },
-];
+import { User } from '../models/User';
 
 export default function Feed() {
   const currentUserId = 'user1'; // In a real app, this would come from authentication
@@ -137,7 +20,7 @@ export default function Feed() {
 
   // Function to find the author of a post
   const findAuthor = (authorId: string): User => {
-    const author = sampleUsers.find(user => user.id === authorId);
+    const author = sampleUsers.find((user) => user.id === authorId);
     if (!author) {
       throw new Error(`Author with ID ${authorId} not found`);
     }
@@ -146,14 +29,12 @@ export default function Feed() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>
-        Feed
-      </ThemedText>
-      <ThemedText style={styles.subtitle}>Your chronological timeline</ThemedText>
+      <Text style={styles.title}>Feed</Text>
+      <Text style={styles.subtitle}>Your chronological timeline</Text>
 
       <FlatList
         data={samplePosts}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <PostCard
             post={item}

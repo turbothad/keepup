@@ -9,7 +9,10 @@ interface SignupFormProps {
   onSwitchToLogin: () => void;
 }
 
-export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProps) {
+export default function SignupForm({
+  onSignup,
+  onSwitchToLogin,
+}: SignupFormProps) {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -88,7 +91,9 @@ export default function SignupForm({ onSignup, onSwitchToLogin }: SignupFormProp
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.switchButton} onPress={onSwitchToLogin}>
-        <ThemedText style={styles.switchText}>Already have an account? Log in</ThemedText>
+        <ThemedText style={styles.switchText}>
+          Already have an account? Log in
+        </ThemedText>
       </TouchableOpacity>
     </ThemedView>
   );

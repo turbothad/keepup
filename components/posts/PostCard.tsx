@@ -16,36 +16,49 @@ interface PostCardProps {
   onSave: (postId: string) => void;
 }
 
-export default function PostCard({ post, author, currentUserId, onLike, onSave }: PostCardProps) {
+export default function PostCard({
+  post,
+  author,
+  currentUserId,
+  onLike,
+  onSave,
+}: PostCardProps) {
   const [showComments, setShowComments] = useState(false);
 
   const isLiked = post.likes.includes(currentUserId);
   const isSaved = post.savedBy.includes(currentUserId);
 
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('en-US', {
+  const formatDate = (date: Date) =>
+    new Date(date).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
     });
-  };
 
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={{ uri: author.profilePicture || 'https://via.placeholder.com/40' }}
+          source={{
+            uri: author.profilePicture || 'https://via.placeholder.com/40',
+          }}
           style={styles.avatar}
         />
         <View style={styles.headerText}>
           <ThemedText type="defaultSemiBold">{author.username}</ThemedText>
-          <ThemedText style={styles.timestamp}>{formatDate(post.createdAt)}</ThemedText>
+          <ThemedText style={styles.timestamp}>
+            {formatDate(post.createdAt)}
+          </ThemedText>
         </View>
       </View>
 
       <Image
-        source={typeof post.imageUrl === 'string' ? { uri: post.imageUrl } : post.imageUrl}
+        source={
+          typeof post.imageUrl === 'string'
+            ? { uri: post.imageUrl }
+            : post.imageUrl
+        }
         style={styles.postImage}
       />
 
@@ -54,7 +67,10 @@ export default function PostCard({ post, author, currentUserId, onLike, onSave }
       </View>
 
       <View style={styles.actions}>
-        <TouchableOpacity onPress={() => onLike(post.id)} style={styles.actionButton}>
+        <TouchableOpacity
+          onPress={() => onLike(post.id)}
+          style={styles.actionButton}
+        >
           <MaterialIcons
             name={isLiked ? 'favorite' : 'favorite-border'}
             size={24}
@@ -65,20 +81,32 @@ export default function PostCard({ post, author, currentUserId, onLike, onSave }
 
         <TouchableOpacity
           onPress={() => setShowComments(!showComments)}
-          style={styles.actionButton}>
+          style={styles.actionButton}
+        >
           <MaterialIcons name="chat-bubble-outline" size={24} color="white" />
           <ThemedText style={styles.actionText}>
             {Array.isArray(post.comments) ? post.comments.length : 0}
           </ThemedText>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => onSave(post.id)} style={styles.actionButton}>
-          <MaterialIcons name={isSaved ? 'bookmark' : 'bookmark-border'} size={24} color="white" />
+        <TouchableOpacity
+          onPress={() => onSave(post.id)}
+          style={styles.actionButton}
+        >
+          <MaterialIcons
+            name={isSaved ? 'bookmark' : 'bookmark-border'}
+            size={24}
+            color="white"
+          />
         </TouchableOpacity>
       </View>
 
       {showComments && (
-        <CommentSection postId={post.id} comments={[]} currentUserId={currentUserId} />
+        <CommentSection
+          postId={post.id}
+          comments={[]}
+          currentUserId={currentUserId}
+        />
       )}
     </ThemedView>
   );

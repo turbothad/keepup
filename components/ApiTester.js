@@ -9,12 +9,12 @@ import {
 } from 'react-native';
 import { AuthService, PostService } from '../services/api';
 
-const ApiTester = () => {
+function ApiTester() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const addResult = (test, success, message, data = null) => {
-    setResults(prev => [
+    setResults((prev) => [
       { test, success, message, data, timestamp: new Date().toISOString() },
       ...prev,
     ]);
@@ -36,7 +36,12 @@ const ApiTester = () => {
         };
 
         const registerResult = await AuthService.register(testUser);
-        addResult('Register', true, 'Successfully registered test user', registerResult);
+        addResult(
+          'Register',
+          true,
+          'Successfully registered test user',
+          registerResult
+        );
 
         // Logout test
         await AuthService.logout();
@@ -67,13 +72,23 @@ const ApiTester = () => {
         };
 
         const createResult = await PostService.createPost(newPost);
-        addResult('Create Post', true, 'Successfully created test post', createResult);
+        addResult(
+          'Create Post',
+          true,
+          'Successfully created test post',
+          createResult
+        );
 
         // Get posts test
         const posts = await PostService.getPosts();
-        addResult('Get Posts', true, `Successfully retrieved ${posts.length} posts`, {
-          count: posts.length,
-        });
+        addResult(
+          'Get Posts',
+          true,
+          `Successfully retrieved ${posts.length} posts`,
+          {
+            count: posts.length,
+          }
+        );
       } catch (err) {
         addResult('Post Tests', false, `Post tests failed: ${err.message}`);
       }
@@ -87,28 +102,48 @@ const ApiTester = () => {
       <Text style={styles.title}>API Tests</Text>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={runAuthTests} disabled={loading}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={runAuthTests}
+          disabled={loading}
+        >
           <Text style={styles.buttonText}>Test Auth API</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={runPostTests} disabled={loading}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={runPostTests}
+          disabled={loading}
+        >
           <Text style={styles.buttonText}>Test Posts API</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.clearButton} onPress={clearResults} disabled={loading}>
+        <TouchableOpacity
+          style={styles.clearButton}
+          onPress={clearResults}
+          disabled={loading}
+        >
           <Text style={styles.buttonText}>Clear Results</Text>
         </TouchableOpacity>
       </View>
 
-      {loading && <ActivityIndicator size="large" color="#007bff" style={styles.loader} />}
+      {loading && (
+        <ActivityIndicator size="large" color="#007bff" style={styles.loader} />
+      )}
 
       <ScrollView style={styles.resultsContainer}>
         {results.map((result, index) => (
           <View
             key={index}
-            style={[styles.resultItem, result.success ? styles.successItem : styles.errorItem]}>
+            style={[
+              styles.resultItem,
+              result.success ? styles.successItem : styles.errorItem,
+            ]}
+          >
             <Text style={styles.resultTitle}>{result.test}</Text>
-            <Text style={styles.resultStatus}>Status: {result.success ? 'SUCCESS' : 'FAILED'}</Text>
+            <Text style={styles.resultStatus}>
+              Status: {result.success ? 'SUCCESS' : 'FAILED'}
+            </Text>
             <Text style={styles.resultMessage}>{result.message}</Text>
             <Text style={styles.resultTime}>{result.timestamp}</Text>
           </View>
@@ -116,7 +151,7 @@ const ApiTester = () => {
       </ScrollView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   button: {

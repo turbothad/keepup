@@ -10,11 +10,17 @@ interface FriendRequestCardProps {
   onReject: (userId: string) => void;
 }
 
-export default function FriendRequestCard({ user, onAccept, onReject }: FriendRequestCardProps) {
+export default function FriendRequestCard({
+  user,
+  onAccept,
+  onReject,
+}: FriendRequestCardProps) {
   return (
     <ThemedView style={styles.container}>
       <Image
-        source={{ uri: user.profilePicture || 'https://via.placeholder.com/50' }}
+        source={{
+          uri: user.profilePicture || 'https://via.placeholder.com/50',
+        }}
         style={styles.avatar}
       />
 
@@ -25,13 +31,15 @@ export default function FriendRequestCard({ user, onAccept, onReject }: FriendRe
       <View style={styles.actions}>
         <TouchableOpacity
           style={[styles.button, styles.acceptButton]}
-          onPress={() => onAccept(user.id)}>
+          onPress={() => onAccept(user.id)}
+        >
           <ThemedText style={styles.acceptText}>Accept</ThemedText>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.button, styles.rejectButton]}
-          onPress={() => onReject(user.id)}>
+          onPress={() => onReject(user.id)}
+        >
           <ThemedText style={styles.rejectText}>Decline</ThemedText>
         </TouchableOpacity>
       </View>

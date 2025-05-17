@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity, ScrollView, View } from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  View,
+} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ThemedText } from '../components/ThemedText';
 import { ThemedView } from '../components/ThemedView';
@@ -34,7 +40,11 @@ const currentUser: User = {
 // Setting list items with icons
 const settingItems = [
   { id: 'account', label: 'Account Settings', icon: 'account-circle' },
-  { id: 'notifications', label: 'Notification Preferences', icon: 'notifications' },
+  {
+    id: 'notifications',
+    label: 'Notification Preferences',
+    icon: 'notifications',
+  },
   { id: 'privacy', label: 'Privacy Controls', icon: 'security' },
   { id: 'appearance', label: 'App Appearance', icon: 'palette' },
   { id: 'help', label: 'Help & Support', icon: 'help' },
@@ -52,7 +62,10 @@ export default function Profile() {
       <ThemedView style={styles.container}>
         <View style={styles.header}>
           <Image
-            source={{ uri: currentUser.profilePicture || 'https://via.placeholder.com/120' }}
+            source={{
+              uri:
+                currentUser.profilePicture || 'https://via.placeholder.com/120',
+            }}
             style={styles.profilePicture}
           />
 
@@ -63,11 +76,15 @@ export default function Profile() {
 
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
-              <ThemedText type="defaultSemiBold">{currentUser.friends.length}</ThemedText>
+              <ThemedText type="defaultSemiBold">
+                {currentUser.friends.length}
+              </ThemedText>
               <ThemedText style={styles.statLabel}>Friends</ThemedText>
             </View>
             <View style={styles.statItem}>
-              <ThemedText type="defaultSemiBold">{currentUser.groups.length}</ThemedText>
+              <ThemedText type="defaultSemiBold">
+                {currentUser.groups.length}
+              </ThemedText>
               <ThemedText style={styles.statLabel}>Groups</ThemedText>
             </View>
           </View>
@@ -77,11 +94,12 @@ export default function Profile() {
           Settings
         </ThemedText>
 
-        {settingItems.map(item => (
+        {settingItems.map((item) => (
           <TouchableOpacity
             key={item.id}
             style={styles.settingItem}
-            onPress={() => handleSettingPress(item.id)}>
+            onPress={() => handleSettingPress(item.id)}
+          >
             <MaterialIcons
               name={item.icon as any}
               size={24}

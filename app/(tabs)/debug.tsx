@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Button, ScrollView } from 'react-native';
+import { router } from 'expo-router';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
 import { AuthContext } from '../../context/AuthContext';
-import { router } from 'expo-router';
 import ServerTest from '../../components/ServerTest';
 import ApiTester from '../../components/ApiTester';
 import AuthTest from '../../components/AuthTest';

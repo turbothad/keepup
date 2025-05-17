@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  FlatList,
+} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
@@ -11,30 +17,45 @@ interface CommentSectionProps {
   currentUserId: string;
 }
 
-export default function CommentSection({ postId, comments, currentUserId }: CommentSectionProps) {
+export default function CommentSection({
+  postId,
+  comments,
+  currentUserId,
+}: CommentSectionProps) {
   const [newComment, setNewComment] = useState('');
 
   const handleAddComment = () => {
     if (!newComment.trim()) return;
 
     // In a real app, you would call an API to add the comment
-    console.log('Adding comment:', { postId, text: newComment, authorId: currentUserId });
+    console.log('Adding comment:', {
+      postId,
+      text: newComment,
+      authorId: currentUserId,
+    });
 
     // Clear the input
     setNewComment('');
   };
 
   // Check if we have Comment objects or just string IDs
-  const hasCommentObjects = comments.length > 0 && typeof comments[0] !== 'string';
+  const hasCommentObjects =
+    comments.length > 0 && typeof comments[0] !== 'string';
 
   const renderComment = ({ item }: { item: Comment }) => {
     const isCurrentUserComment = item.authorId === currentUserId;
 
     return (
       <ThemedView
-        style={[styles.commentContainer, isCurrentUserComment && styles.currentUserComment]}>
+        style={[
+          styles.commentContainer,
+          isCurrentUserComment && styles.currentUserComment,
+        ]}
+      >
         <ThemedText type="defaultSemiBold" style={styles.authorName}>
-          {isCurrentUserComment ? 'You' : 'User ' + item.authorId.substring(0, 5)}
+          {isCurrentUserComment
+            ? 'You'
+            : `User ${item.authorId.substring(0, 5)}`}
         </ThemedText>
         <ThemedText>{item.text}</ThemedText>
         <ThemedText style={styles.timestamp}>
@@ -54,12 +75,14 @@ export default function CommentSection({ postId, comments, currentUserId }: Comm
         <FlatList
           data={comments as Comment[]}
           renderItem={renderComment}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           style={styles.commentsList}
         />
       ) : (
         <ThemedText style={styles.noComments}>
-          {comments.length > 0 ? 'Loading comments...' : 'No comments yet. Be the first!'}
+          {comments.length > 0
+            ? 'Loading comments...'
+            : 'No comments yet. Be the first!'}
         </ThemedText>
       )}
 
@@ -75,7 +98,8 @@ export default function CommentSection({ postId, comments, currentUserId }: Comm
         <TouchableOpacity
           style={styles.addButton}
           onPress={handleAddComment}
-          disabled={!newComment.trim()}>
+          disabled={!newComment.trim()}
+        >
           <MaterialIcons name="send" size={20} color="black" />
         </TouchableOpacity>
       </View>

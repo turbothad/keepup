@@ -8,26 +8,26 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { AuthService } from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { AuthService } from '../services/api';
 
 const API_URL = 'http://localhost:818/api';
 // For physical devices, use your computer's local IP instead:
 // const API_URL = 'http://192.168.x.x:818/api';
 
-const AuthTest = () => {
+function AuthTest() {
   const [testResults, setTestResults] = useState([]);
   const [isRunning, setIsRunning] = useState(false);
   const [testStatus, setTestStatus] = useState('idle'); // idle, running, success, failed
 
   const log = (message, isSuccess = true) => {
-    setTestResults(prev => [...prev, { message, isSuccess }]);
+    setTestResults((prev) => [...prev, { message, isSuccess }]);
     // Update overall status based on the last result
     if (message.includes('🏁 Tests completed')) {
-      setTestStatus(prev => {
+      setTestStatus((prev) => {
         // Check if any test failed
-        const anyFailed = testResults.some(result => !result.isSuccess);
+        const anyFailed = testResults.some((result) => !result.isSuccess);
         return anyFailed ? 'failed' : 'success';
       });
     }
@@ -57,7 +57,10 @@ const AuthTest = () => {
       // Register test user
       log('Creating test user...');
       try {
-        const regResult = await axios.post(`${API_URL}/users/register`, testUser);
+        const regResult = await axios.post(
+          `${API_URL}/users/register`,
+          testUser
+        );
         if (regResult.data && regResult.data.token) {
           log('✅ Test user created successfully');
         } else {
@@ -80,7 +83,7 @@ const AuthTest = () => {
           log('✅ Login successful');
 
           // Save token
-          const token = loginRes.data.token;
+          const { token } = loginRes.data;
           await AsyncStorage.setItem('@auth_token', token);
           log('✅ Token stored in AsyncStorage');
 
@@ -105,7 +108,9 @@ const AuthTest = () => {
               const payload = JSON.parse(atob(tokenParts[1]));
               log(`✅ Token payload successfully decoded`);
               log(`Token contains user ID: ${payload.id || 'Not found'}`);
-              log(`Token expires: ${new Date(payload.exp * 1000).toLocaleString()}`);
+              log(
+                `Token expires: ${new Date(payload.exp * 1000).toLocaleString()}`
+              );
             } else {
               log('❌ Token format is invalid', false);
             }
@@ -125,7 +130,10 @@ const AuthTest = () => {
             if (err.response && err.response.status === 401) {
               log('✅ Server correctly rejected invalid token');
             } else {
-              log(`❌ Unexpected error with invalid token: ${err.message}`, false);
+              log(
+                `❌ Unexpected error with invalid token: ${err.message}`,
+                false
+              );
             }
           }
 
@@ -173,12 +181,17 @@ const AuthTest = () => {
                 : testStatus === 'running'
                   ? styles.running
                   : styles.unknown,
-          ]}>
+          ]}
+        >
           {testStatus.toUpperCase()}
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={runTests} disabled={isRunning}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={runTests}
+        disabled={isRunning}
+      >
         {isRunning ? (
           <ActivityIndicator color="#fff" />
         ) : (
@@ -190,14 +203,18 @@ const AuthTest = () => {
         {testResults.map((result, index) => (
           <Text
             key={index}
-            style={[styles.resultText, result.isSuccess ? styles.success : styles.failure]}>
+            style={[
+              styles.resultText,
+              result.isSuccess ? styles.success : styles.failure,
+            ]}
+          >
             {result.message}
           </Text>
         ))}
       </ScrollView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   button: {

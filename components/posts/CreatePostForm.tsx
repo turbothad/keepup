@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, Image, View, Alert } from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  View,
+  Alert,
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
@@ -37,7 +44,7 @@ export default function CreatePostForm({
       Alert.alert(
         'Daily Post Limit Reached',
         "You've already shared a post today. Come back tomorrow for a fresh post!",
-        [{ text: 'OK' }],
+        [{ text: 'OK' }]
       );
       return;
     }
@@ -87,7 +94,8 @@ export default function CreatePostForm({
       <TouchableOpacity
         style={[styles.button, hasPostedToday && styles.disabledButton]}
         onPress={handleSubmit}
-        disabled={hasPostedToday}>
+        disabled={hasPostedToday}
+      >
         <ThemedText style={styles.buttonText}>
           {hasPostedToday ? 'Already Posted Today' : 'Share Post'}
         </ThemedText>

@@ -30,7 +30,9 @@ export default function CreatePost() {
         onCreatePost={handleCreatePost}
       />
 
-      <ThemedText style={styles.reminder}>Remember, you can post only once a day.</ThemedText>
+      <ThemedText style={styles.reminder}>
+        Remember, you can post only once a day.
+      </ThemedText>
     </ThemedView>
   );
 }

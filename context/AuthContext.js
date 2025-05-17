@@ -1,11 +1,11 @@
 // context/AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
-import { AuthService } from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthService } from '../services/api';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         loading,
-        login: async credentials => {
+        login: async (credentials) => {
           try {
             const data = await AuthService.login(credentials);
             setUser(data.user);
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
             throw error;
           }
         },
-        register: async userData => {
+        register: async (userData) => {
           try {
             const data = await AuthService.register(userData);
             setUser(data.user);
@@ -75,11 +75,10 @@ export const AuthProvider = ({ children }) => {
             setAuthToken();
           }
         },
-        isAuthenticated: () => {
-          return !!user;
-        },
-      }}>
+        isAuthenticated: () => !!user,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
-};
+}
