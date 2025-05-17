@@ -18,7 +18,7 @@ export default function AuthScreen() {
     }
   }, [user]);
 
-  const handleLogin = async credentials => {
+  const handleLogin = async (credentials) => {
     try {
       await login(credentials);
       // Navigation will happen automatically in the useEffect
@@ -50,9 +50,15 @@ export default function AuthScreen() {
   return (
     <ThemedView style={styles.container}>
       {isLogin ? (
-        <LoginForm onLogin={handleLogin} onSwitchToSignup={() => setIsLogin(false)} />
+        <LoginForm
+          onLogin={handleLogin}
+          onSwitchToSignup={() => setIsLogin(false)}
+        />
       ) : (
-        <SignupForm onSignup={handleSignup} onSwitchToLogin={() => setIsLogin(true)} />
+        <SignupForm
+          onSignup={handleSignup}
+          onSwitchToLogin={() => setIsLogin(true)}
+        />
       )}
     </ThemedView>
   );

@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:818/api';
 // For physical devices, use your computer's local IP:
 // const API_URL = 'http://192.168.x.x:818/api';
 
-const ServerTest = () => {
+function ServerTest() {
   const [serverStatus, setServerStatus] = useState('unknown');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -46,14 +52,19 @@ const ServerTest = () => {
               : serverStatus === 'disconnected'
                 ? styles.disconnected
                 : styles.unknown,
-          ]}>
+          ]}
+        >
           {serverStatus.toUpperCase()}
         </Text>
       </View>
 
       {error && <Text style={styles.error}>Error: {error}</Text>}
 
-      <TouchableOpacity style={styles.button} onPress={testConnection} disabled={loading}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={testConnection}
+        disabled={loading}
+      >
         {loading ? (
           <ActivityIndicator color="#fff" />
         ) : (
@@ -62,7 +73,7 @@ const ServerTest = () => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   button: {

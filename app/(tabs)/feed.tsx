@@ -8,14 +8,14 @@ import {
   View,
   Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
 import { PostService } from '../../services/api';
 import { AuthContext } from '../../context/AuthContext';
 import PostCard from '../../components/posts/PostCard';
 import { User, UserTheme } from '../../models/User';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 
 // Interface for the post data structure coming from the API
 interface ApiPost {
@@ -34,32 +34,30 @@ interface ApiPost {
 }
 
 // Create a simplified author object for the PostCard
-const createAuthorFromApiUser = (apiUser: ApiPost['user']): User => {
-  return {
-    id: apiUser._id,
-    username: apiUser.username,
-    email: '', // Not provided by the API response
-    profilePicture: apiUser.profilePicture,
-    friends: [],
-    groups: [],
-    settings: {
-      theme: UserTheme.DARK,
-      notifications: {
-        newComments: true,
-        friendRequests: true,
-        groupInvites: true,
-        dailyReminder: true,
-      },
-      privacy: {
-        profileVisibility: 'public',
-        allowFriendRequests: true,
-      },
+const createAuthorFromApiUser = (apiUser: ApiPost['user']): User => ({
+  id: apiUser._id,
+  username: apiUser.username,
+  email: '', // Not provided by the API response
+  profilePicture: apiUser.profilePicture,
+  friends: [],
+  groups: [],
+  settings: {
+    theme: UserTheme.DARK,
+    notifications: {
+      newComments: true,
+      friendRequests: true,
+      groupInvites: true,
+      dailyReminder: true,
     },
-    hasPostedToday: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-};
+    privacy: {
+      profileVisibility: 'public',
+      allowFriendRequests: true,
+    },
+  },
+  hasPostedToday: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+});
 
 export default function FeedScreen() {
   const [posts, setPosts] = useState<ApiPost[]>([]);
@@ -120,7 +118,7 @@ export default function FeedScreen() {
       // Sort posts in chronological order (newest first)
       const sortedPosts = fetchedPosts.sort(
         (a: ApiPost, b: ApiPost) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       setPosts(sortedPosts);
     } catch (error) {
@@ -173,15 +171,16 @@ export default function FeedScreen() {
   // Filter posts by friends if the toggle is on
   const displayedPosts = showFriendsOnly
     ? user?.friends
-      ? posts.filter(post => {
+      ? posts.filter((post) => {
           const postUserId = post.user._id;
           const isFriend = user.friends.some(
-            (friendId: string) => friendId === postUserId || friendId === postUserId.toString(),
+            (friendId: string) =>
+              friendId === postUserId || friendId === postUserId.toString()
           );
 
           // Debug logging for each post's user ID and whether they're a friend
           console.log(
-            `Post by user ${post.user.username} (ID: ${postUserId}): ${isFriend ? 'Is friend' : 'Not a friend'}`,
+            `Post by user ${post.user.username} (ID: ${postUserId}): ${isFriend ? 'Is friend' : 'Not a friend'}`
           );
 
           return isFriend;
@@ -205,7 +204,10 @@ export default function FeedScreen() {
         <ThemedText type="subtitle" style={styles.errorText}>
           {authError}
         </ThemedText>
-        <TouchableOpacity style={styles.retryButton} onPress={() => fetchPosts()}>
+        <TouchableOpacity
+          style={styles.retryButton}
+          onPress={() => fetchPosts()}
+        >
           <ThemedText style={styles.retryText}>Retry</ThemedText>
         </TouchableOpacity>
       </ThemedView>
@@ -220,7 +222,8 @@ export default function FeedScreen() {
         </ThemedText>
         <TouchableOpacity
           style={[styles.filterButton, showFriendsOnly && styles.activeFilter]}
-          onPress={toggleFriendsOnly}>
+          onPress={toggleFriendsOnly}
+        >
           <ThemedText style={styles.filterText}>
             {showFriendsOnly ? 'Friends Only' : 'All Posts'}
           </ThemedText>
@@ -230,14 +233,15 @@ export default function FeedScreen() {
       {showFriendsOnly && !hasFriendsList && (
         <ThemedView style={styles.warningContainer}>
           <ThemedText style={styles.warningText}>
-            Your profile doesn't have a friends list. Please update your profile or add friends.
+            Your profile doesn't have a friends list. Please update your profile
+            or add friends.
           </ThemedText>
         </ThemedView>
       )}
 
       <FlatList
         data={displayedPosts}
-        keyExtractor={item => item._id}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <PostCard
             post={{
@@ -247,7 +251,9 @@ export default function FeedScreen() {
               createdAt: new Date(item.createdAt),
               updatedAt: new Date(item.updatedAt),
               authorId: item.user._id,
-              likes: item.likes.map(like => (typeof like === 'string' ? like : like._id)),
+              likes: item.likes.map((like) =>
+                typeof like === 'string' ? like : like._id
+              ),
               comments: item.comments,
               savedBy: [], // Backend doesn't seem to track this yet
             }}
@@ -258,7 +264,9 @@ export default function FeedScreen() {
           />
         )}
         style={styles.list}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
         ListEmptyComponent={
           <ThemedView style={styles.emptyContainer}>
             <ThemedText style={styles.emptyText}>

@@ -1,10 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { StyleSheet, Image, Button, ScrollView, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  Button,
+  ScrollView,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
 import { AuthContext } from '../../context/AuthContext';
-import { router } from 'expo-router';
 
 // Define API_URL
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:818/api';
@@ -90,7 +97,11 @@ export default function ProfileScreen() {
   // Setting list items with icons
   const settingItems = [
     { id: 'account', label: 'Account Settings', icon: 'account-circle' },
-    { id: 'notifications', label: 'Notification Preferences', icon: 'notifications' },
+    {
+      id: 'notifications',
+      label: 'Notification Preferences',
+      icon: 'notifications',
+    },
     { id: 'privacy', label: 'Privacy Controls', icon: 'security' },
     { id: 'appearance', label: 'App Appearance', icon: 'palette' },
     { id: 'help', label: 'Help & Support', icon: 'help' },
@@ -110,7 +121,11 @@ export default function ProfileScreen() {
       <ThemedView style={styles.container}>
         <View style={styles.header}>
           <Image
-            source={{ uri: profileData?.profilePicture || 'https://via.placeholder.com/120' }}
+            source={{
+              uri:
+                profileData?.profilePicture ||
+                'https://via.placeholder.com/120',
+            }}
             style={styles.profileImage}
           />
 
@@ -121,11 +136,15 @@ export default function ProfileScreen() {
 
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
-              <ThemedText type="defaultSemiBold">{profileData?.friends?.length || 0}</ThemedText>
+              <ThemedText type="defaultSemiBold">
+                {profileData?.friends?.length || 0}
+              </ThemedText>
               <ThemedText style={styles.statLabel}>Friends</ThemedText>
             </View>
             <View style={styles.statItem}>
-              <ThemedText type="defaultSemiBold">{profileData?.groups?.length || 0}</ThemedText>
+              <ThemedText type="defaultSemiBold">
+                {profileData?.groups?.length || 0}
+              </ThemedText>
               <ThemedText style={styles.statLabel}>Groups</ThemedText>
             </View>
           </View>
@@ -135,11 +154,12 @@ export default function ProfileScreen() {
           Settings
         </ThemedText>
 
-        {settingItems.map(item => (
+        {settingItems.map((item) => (
           <TouchableOpacity
             key={item.id}
             style={styles.settingItem}
-            onPress={() => handleSettingPress(item.id)}>
+            onPress={() => handleSettingPress(item.id)}
+          >
             <MaterialIcons
               name={item.icon as any}
               size={24}

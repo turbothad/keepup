@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
-import { AuthContext } from '../context/AuthContext';
 import { router } from 'expo-router';
 import { ActivityIndicator, View } from 'react-native';
+import { AuthContext } from '../context/AuthContext';
 import { useThemeColor } from '../hooks/useThemeColor';
 
 export default function IndexPage() {
@@ -20,7 +20,14 @@ export default function IndexPage() {
   }, [loading, isAuthenticated]);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor,
+      }}
+    >
       <ActivityIndicator size="large" color={textColor} />
     </View>
   );
