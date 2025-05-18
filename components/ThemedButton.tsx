@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   rainbowBorder: {
-    borderWidth: 1.5,
     borderColor: Colors.dark.button.primary.background,
+    borderWidth: 1.5,
     // Since we can't actually use a gradient border easily, we'll use a solid color
     // In a real implementation, you might want to use a LinearGradient component
   },
