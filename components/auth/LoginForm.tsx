@@ -28,9 +28,7 @@ export default function LoginForm({
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>
-        Welcome to KeepUp
-      </ThemedText>
+      {/* <ThemedText type="title" style={styles.title} /> */}
 
       <TextInput
         style={styles.input}

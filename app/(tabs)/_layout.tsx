@@ -5,13 +5,22 @@ import { ActivityIndicator, View } from 'react-native';
 import { useThemeColor } from '../../hooks/useThemeColor';
 import { AuthContext } from '../../context/AuthContext';
 import { commonStyles } from '../../constants/Styles';
+import Colors from '../../constants/Colors';
 
 export default function TabsLayout() {
-  const iconColor = useThemeColor({}, 'icon');
-  const backgroundColor = useThemeColor({}, 'background');
-  const textColor = useThemeColor({}, 'text');
-  const tabIconDefault = useThemeColor({}, 'tabIconDefault');
+  const backgroundColor = useThemeColor({}, 'background') as string;
+  const textColor = useThemeColor({}, 'text') as string;
+  const tabIconDefault = useThemeColor({}, 'tabIconDefault') as string;
   const { isAuthenticated, loading } = useContext(AuthContext);
+
+  // Get rainbow accent colors for the tab icons
+  const rainbowAccents = [
+    Colors.dark.button.primary.background, // blue
+    Colors.dark.error, // red
+    Colors.dark.warning, // orange
+    Colors.dark.success, // green
+    Colors.dark.secondary, // purple
+  ];
 
   // Handle authentication changes with useEffect instead of conditional returns
   useEffect(() => {
@@ -36,17 +45,32 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarActiveTintColor: textColor,
         tabBarInactiveTintColor: tabIconDefault,
-        tabBarStyle: { backgroundColor },
-        headerStyle: { backgroundColor },
+        tabBarStyle: {
+          backgroundColor,
+          borderTopColor: Colors.dark.card.border,
+          height: 90,
+          paddingBottom: 25,
+          paddingTop: 10,
+        },
+        headerStyle: {
+          backgroundColor,
+          shadowColor: 'transparent', // iOS
+          elevation: 0, // Android
+        },
         headerTintColor: textColor,
+        headerShadowVisible: false,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Groups',
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="group" size={24} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="group"
+              size={28}
+              color={focused ? rainbowAccents[0] : tabIconDefault}
+            />
           ),
         }}
       />
@@ -54,8 +78,12 @@ export default function TabsLayout() {
         name="feed"
         options={{
           title: 'Feed',
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="dynamic-feed" size={24} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="dynamic-feed"
+              size={28}
+              color={focused ? rainbowAccents[1] : tabIconDefault}
+            />
           ),
         }}
       />
@@ -63,8 +91,12 @@ export default function TabsLayout() {
         name="create-post"
         options={{
           title: 'Post',
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="add-circle" size={24} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="add-circle"
+              size={34}
+              color={focused ? rainbowAccents[2] : tabIconDefault}
+            />
           ),
         }}
       />
@@ -72,8 +104,12 @@ export default function TabsLayout() {
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="person" size={24} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="person"
+              size={28}
+              color={focused ? rainbowAccents[3] : tabIconDefault}
+            />
           ),
         }}
       />
@@ -81,8 +117,12 @@ export default function TabsLayout() {
         name="debug"
         options={{
           title: 'Debug',
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="bug-report" size={24} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="bug-report"
+              size={28}
+              color={focused ? rainbowAccents[4] : tabIconDefault}
+            />
           ),
         }}
       />
