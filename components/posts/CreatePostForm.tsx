@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, Image, View, Alert } from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  View,
+  Alert,
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
@@ -11,7 +18,11 @@ interface CreatePostFormProps {
   onCreatePost: (post: Partial<Post>) => void;
 }
 
-export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }: CreatePostFormProps) {
+export default function CreatePostForm({
+  userId,
+  hasPostedToday,
+  onCreatePost,
+}: CreatePostFormProps) {
   const [image, setImage] = useState<string | null>(null);
   const [description, setDescription] = useState('');
 
@@ -31,15 +42,15 @@ export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }:
   const handleSubmit = () => {
     if (hasPostedToday) {
       Alert.alert(
-        "Daily Post Limit Reached",
+        'Daily Post Limit Reached',
         "You've already shared a post today. Come back tomorrow for a fresh post!",
-        [{ text: "OK" }]
+        [{ text: 'OK' }]
       );
       return;
     }
-    
+
     if (!image) {
-      Alert.alert("Image Required", "Please select an image for your post");
+      Alert.alert('Image Required', 'Please select an image for your post');
       return;
     }
 
@@ -50,14 +61,16 @@ export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }:
       authorId: userId,
       createdAt: new Date(),
     };
-    
+
     onCreatePost(newPost);
   };
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="subtitle" style={styles.title}>Today's Moment</ThemedText>
-      
+      <ThemedText type="subtitle" style={styles.title}>
+        Today's Moment
+      </ThemedText>
+
       <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
         {image ? (
           <Image source={{ uri: image }} style={styles.image} />
@@ -67,7 +80,7 @@ export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }:
           </ThemedView>
         )}
       </TouchableOpacity>
-      
+
       <TextInput
         style={styles.input}
         placeholder="What's happening today?"
@@ -77,14 +90,14 @@ export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }:
         multiline
         maxLength={250}
       />
-      
-      <TouchableOpacity 
-        style={[styles.button, hasPostedToday && styles.disabledButton]} 
+
+      <TouchableOpacity
+        style={[styles.button, hasPostedToday && styles.disabledButton]}
         onPress={handleSubmit}
         disabled={hasPostedToday}
       >
         <ThemedText style={styles.buttonText}>
-          {hasPostedToday ? "Already Posted Today" : "Share Post"}
+          {hasPostedToday ? 'Already Posted Today' : 'Share Post'}
         </ThemedText>
       </TouchableOpacity>
     </ThemedView>
@@ -92,31 +105,40 @@ export default function CreatePostForm({ userId, hasPostedToday, onCreatePost }:
 }
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 15,
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
   container: {
     padding: 20,
     width: '100%',
   },
-  title: {
-    fontSize: 20,
-    marginBottom: 15,
-  },
-  imageContainer: {
-    width: '100%',
-    height: 250,
-    marginBottom: 15,
-    borderRadius: 10,
-    overflow: 'hidden',
+  disabledButton: {
+    backgroundColor: '#555',
   },
   image: {
-    width: '100%',
     height: '100%',
+    width: '100%',
+  },
+  imageContainer: {
+    borderRadius: 10,
+    height: 250,
+    marginBottom: 15,
+    overflow: 'hidden',
+    width: '100%',
   },
   imagePlaceholder: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#333',
-    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#333',
+    height: '100%',
+    justifyContent: 'center',
+    width: '100%',
   },
   input: {
     backgroundColor: '#333',
@@ -127,17 +149,8 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlignVertical: 'top',
   },
-  button: {
-    backgroundColor: 'white',
-    borderRadius: 5,
-    padding: 15,
-    alignItems: 'center',
+  title: {
+    fontSize: 20,
+    marginBottom: 15,
   },
-  disabledButton: {
-    backgroundColor: '#555',
-  },
-  buttonText: {
-    color: 'black',
-    fontWeight: 'bold',
-  }
-}); 
+});

@@ -1,15 +1,16 @@
 import React, { useContext, useEffect } from 'react';
-import { Tabs } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ActivityIndicator, View } from 'react-native';
 import { useThemeColor } from '../../hooks/useThemeColor';
 import { AuthContext } from '../../context/AuthContext';
-import { router } from 'expo-router';
-import { ActivityIndicator, View } from 'react-native';
+import { commonStyles } from '../../constants/Styles';
 
 export default function TabsLayout() {
   const iconColor = useThemeColor({}, 'icon');
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
+  const tabIconDefault = useThemeColor({}, 'tabIconDefault');
   const { isAuthenticated, loading } = useContext(AuthContext);
 
   // Handle authentication changes with useEffect instead of conditional returns
@@ -22,7 +23,7 @@ export default function TabsLayout() {
   // Show loading indicator while checking auth
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor }}>
+      <View style={[commonStyles.centerContent, { backgroundColor }]}>
         <ActivityIndicator size="large" color={textColor} />
       </View>
     );
@@ -34,46 +35,57 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: textColor,
-        tabBarInactiveTintColor: useThemeColor({}, 'tabIconDefault'),
+        tabBarInactiveTintColor: tabIconDefault,
         tabBarStyle: { backgroundColor },
         headerStyle: { backgroundColor },
         headerTintColor: textColor,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Groups',
-          tabBarIcon: ({ color }) => <MaterialIcons name="group" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="group" size={24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="feed"
         options={{
           title: 'Feed',
-          tabBarIcon: ({ color }) => <MaterialIcons name="dynamic-feed" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="dynamic-feed" size={24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="create-post"
         options={{
           title: 'Post',
-          tabBarIcon: ({ color }) => <MaterialIcons name="add-circle" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="add-circle" size={24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <MaterialIcons name="person" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="person" size={24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="debug"
         options={{
           title: 'Debug',
-          tabBarIcon: ({ color }) => <MaterialIcons name="bug-report" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="bug-report" size={24} color={color} />
+          ),
         }}
       />
     </Tabs>
   );
-} 
+}

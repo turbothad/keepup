@@ -10,28 +10,34 @@ interface FriendRequestCardProps {
   onReject: (userId: string) => void;
 }
 
-export default function FriendRequestCard({ user, onAccept, onReject }: FriendRequestCardProps) {
+export default function FriendRequestCard({
+  user,
+  onAccept,
+  onReject,
+}: FriendRequestCardProps) {
   return (
     <ThemedView style={styles.container}>
-      <Image 
-        source={{ uri: user.profilePicture || 'https://via.placeholder.com/50' }} 
-        style={styles.avatar} 
+      <Image
+        source={{
+          uri: user.profilePicture || 'https://via.placeholder.com/50',
+        }}
+        style={styles.avatar}
       />
-      
+
       <View style={styles.userInfo}>
         <ThemedText type="defaultSemiBold">{user.username}</ThemedText>
       </View>
-      
+
       <View style={styles.actions}>
-        <TouchableOpacity 
-          style={[styles.button, styles.acceptButton]} 
+        <TouchableOpacity
+          style={[styles.button, styles.acceptButton]}
           onPress={() => onAccept(user.id)}
         >
           <ThemedText style={styles.acceptText}>Accept</ThemedText>
         </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={[styles.button, styles.rejectButton]} 
+
+        <TouchableOpacity
+          style={[styles.button, styles.rejectButton]}
           onPress={() => onReject(user.id)}
         >
           <ThemedText style={styles.rejectText}>Decline</ThemedText>
@@ -42,31 +48,6 @@ export default function FriendRequestCard({ user, onAccept, onReject }: FriendRe
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    marginVertical: 5,
-    borderRadius: 10,
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 15,
-  },
-  userInfo: {
-    flex: 1,
-  },
-  actions: {
-    flexDirection: 'row',
-  },
-  button: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 5,
-    marginLeft: 10,
-  },
   acceptButton: {
     backgroundColor: 'white',
   },
@@ -74,12 +55,37 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
+  actions: {
+    flexDirection: 'row',
+  },
+  avatar: {
+    borderRadius: 25,
+    height: 50,
+    marginRight: 15,
+    width: 50,
+  },
+  button: {
+    borderRadius: 5,
+    marginLeft: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  container: {
+    alignItems: 'center',
+    borderRadius: 10,
+    flexDirection: 'row',
+    marginVertical: 5,
+    padding: 15,
+  },
   rejectButton: {
     backgroundColor: 'transparent',
-    borderWidth: 1,
     borderColor: 'white',
+    borderWidth: 1,
   },
   rejectText: {
     color: 'white',
-  }
-}); 
+  },
+  userInfo: {
+    flex: 1,
+  },
+});

@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:818/api';
 // For physical devices, use your computer's local IP:
 // const API_URL = 'http://192.168.x.x:818/api';
 
-const ServerTest = () => {
+function ServerTest() {
   const [serverStatus, setServerStatus] = useState('unknown');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -35,25 +41,27 @@ const ServerTest = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Server Connection Test</Text>
-      
+
       <View style={styles.statusContainer}>
         <Text style={styles.label}>Status: </Text>
-        <Text style={[
-          styles.status,
-          serverStatus === 'connected' ? styles.connected : 
-          serverStatus === 'disconnected' ? styles.disconnected : 
-          styles.unknown
-        ]}>
+        <Text
+          style={[
+            styles.status,
+            serverStatus === 'connected'
+              ? styles.connected
+              : serverStatus === 'disconnected'
+                ? styles.disconnected
+                : styles.unknown,
+          ]}
+        >
           {serverStatus.toUpperCase()}
         </Text>
       </View>
-      
-      {error && (
-        <Text style={styles.error}>Error: {error}</Text>
-      )}
 
-      <TouchableOpacity 
-        style={styles.button} 
+      {error && <Text style={styles.error}>Error: {error}</Text>}
+
+      <TouchableOpacity
+        style={styles.button}
         onPress={testConnection}
         disabled={loading}
       >
@@ -65,26 +73,35 @@ const ServerTest = () => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+    padding: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  connected: {
+    color: 'green',
+  },
   container: {
-    padding: 20,
     backgroundColor: '#f5f5f5',
     borderRadius: 10,
     margin: 20,
+    padding: 20,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  disconnected: {
+    color: 'red',
+  },
+  error: {
+    color: 'red',
     marginBottom: 20,
     textAlign: 'center',
-  },
-  statusContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
   },
   label: {
     fontSize: 16,
@@ -94,30 +111,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  connected: {
-    color: 'green',
+  statusContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20,
   },
-  disconnected: {
-    color: 'red',
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   unknown: {
     color: 'orange',
   },
-  error: {
-    color: 'red',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  button: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
 });
 
-export default ServerTest; 
+export default ServerTest;

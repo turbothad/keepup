@@ -5,4 +5,4 @@ router.get('/ping', (req, res) => {
   res.json({ message: 'Server is up and running!', timestamp: new Date() });
 });
 
-module.exports = router; 
+module.exports = router;

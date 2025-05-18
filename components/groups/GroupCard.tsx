@@ -10,7 +10,11 @@ interface GroupCardProps {
   onPress: (groupId: string) => void;
 }
 
-export default function GroupCard({ group, memberCount, onPress }: GroupCardProps) {
+export default function GroupCard({
+  group,
+  memberCount,
+  onPress,
+}: GroupCardProps) {
   const getPrivacyIcon = (privacy: GroupPrivacy) => {
     switch (privacy) {
       case GroupPrivacy.PUBLIC:
@@ -27,21 +31,23 @@ export default function GroupCard({ group, memberCount, onPress }: GroupCardProp
   return (
     <TouchableOpacity onPress={() => onPress(group.id)}>
       <ThemedView style={styles.container}>
-        <Image 
-          source={{ uri: group.avatar || 'https://via.placeholder.com/60' }} 
-          style={styles.avatar} 
+        <Image
+          source={{ uri: group.avatar || 'https://via.placeholder.com/60' }}
+          style={styles.avatar}
         />
-        
+
         <View style={styles.info}>
           <View style={styles.nameRow}>
-            <ThemedText type="defaultSemiBold" style={styles.name}>{group.name}</ThemedText>
+            <ThemedText type="defaultSemiBold" style={styles.name}>
+              {group.name}
+            </ThemedText>
             <ThemedText>{getPrivacyIcon(group.settings.privacy)}</ThemedText>
           </View>
-          
+
           <ThemedText style={styles.description} numberOfLines={2}>
             {group.description || 'No description'}
           </ThemedText>
-          
+
           <ThemedText style={styles.memberCount}>
             {memberCount} {memberCount === 1 ? 'member' : 'members'}
           </ThemedText>
@@ -52,37 +58,37 @@ export default function GroupCard({ group, memberCount, onPress }: GroupCardProp
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    padding: 15,
-    marginVertical: 5,
-    borderRadius: 10,
-  },
   avatar: {
-    width: 60,
-    height: 60,
     borderRadius: 30,
+    height: 60,
     marginRight: 15,
+    width: 60,
+  },
+  container: {
+    borderRadius: 10,
+    flexDirection: 'row',
+    marginVertical: 5,
+    padding: 15,
+  },
+  description: {
+    marginBottom: 5,
+    opacity: 0.8,
   },
   info: {
     flex: 1,
     justifyContent: 'center',
   },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 5,
+  memberCount: {
+    fontSize: 12,
+    opacity: 0.6,
   },
   name: {
     fontSize: 16,
   },
-  description: {
-    opacity: 0.8,
+  nameRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 5,
   },
-  memberCount: {
-    fontSize: 12,
-    opacity: 0.6,
-  }
-}); 
+});

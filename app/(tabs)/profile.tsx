@@ -1,10 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { StyleSheet, Image, Button, ScrollView, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  Button,
+  ScrollView,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
 import { AuthContext } from '../../context/AuthContext';
-import { router } from 'expo-router';
 
 // Define API_URL
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:818/api';
@@ -52,10 +59,10 @@ export default function ProfileScreen() {
 
       const response = await fetch(`${API_URL}/users/profile`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setProfileData(data);
@@ -90,12 +97,16 @@ export default function ProfileScreen() {
   // Setting list items with icons
   const settingItems = [
     { id: 'account', label: 'Account Settings', icon: 'account-circle' },
-    { id: 'notifications', label: 'Notification Preferences', icon: 'notifications' },
+    {
+      id: 'notifications',
+      label: 'Notification Preferences',
+      icon: 'notifications',
+    },
     { id: 'privacy', label: 'Privacy Controls', icon: 'security' },
     { id: 'appearance', label: 'App Appearance', icon: 'palette' },
     { id: 'help', label: 'Help & Support', icon: 'help' },
     { id: 'logout', label: 'Logout', icon: 'exit-to-app' },
-  ];  
+  ];
 
   if (loading) {
     return (
@@ -109,35 +120,52 @@ export default function ProfileScreen() {
     <ScrollView style={styles.scrollView}>
       <ThemedView style={styles.container}>
         <View style={styles.header}>
-          <Image 
-            source={{ uri: profileData?.profilePicture || 'https://via.placeholder.com/120' }} 
-            style={styles.profileImage} 
+          <Image
+            source={{
+              uri:
+                profileData?.profilePicture ||
+                'https://via.placeholder.com/120',
+            }}
+            style={styles.profileImage}
           />
-          
-          <ThemedText type="title" style={styles.username}>{profileData?.username}</ThemedText>
+
+          <ThemedText type="title" style={styles.username}>
+            {profileData?.username}
+          </ThemedText>
           <ThemedText style={styles.email}>{profileData?.email}</ThemedText>
-          
+
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
-              <ThemedText type="defaultSemiBold">{profileData?.friends?.length || 0}</ThemedText>
+              <ThemedText type="defaultSemiBold">
+                {profileData?.friends?.length || 0}
+              </ThemedText>
               <ThemedText style={styles.statLabel}>Friends</ThemedText>
             </View>
             <View style={styles.statItem}>
-              <ThemedText type="defaultSemiBold">{profileData?.groups?.length || 0}</ThemedText>
+              <ThemedText type="defaultSemiBold">
+                {profileData?.groups?.length || 0}
+              </ThemedText>
               <ThemedText style={styles.statLabel}>Groups</ThemedText>
             </View>
           </View>
         </View>
-        
-        <ThemedText type="subtitle" style={styles.sectionTitle}>Settings</ThemedText>
-        
+
+        <ThemedText type="subtitle" style={styles.sectionTitle}>
+          Settings
+        </ThemedText>
+
         {settingItems.map((item) => (
-          <TouchableOpacity 
+          <TouchableOpacity
             key={item.id}
             style={styles.settingItem}
             onPress={() => handleSettingPress(item.id)}
           >
-            <MaterialIcons name={item.icon as any} size={24} color="white" style={styles.settingIcon} />
+            <MaterialIcons
+              name={item.icon as any}
+              size={24}
+              color="white"
+              style={styles.settingIcon}
+            />
             <ThemedText style={styles.settingLabel}>{item.label}</ThemedText>
             <MaterialIcons name="chevron-right" size={24} color="white" />
           </TouchableOpacity>
@@ -148,34 +176,57 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  header: {
-    alignItems: 'center',
+  actions: {
+    gap: 10,
     padding: 20,
   },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 15,
-  },
-  username: {
-    marginBottom: 5,
+  container: {
+    flex: 1,
   },
   email: {
     marginBottom: 20,
     opacity: 0.7,
   },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '80%',
+  header: {
+    alignItems: 'center',
+    padding: 20,
+  },
+  infoCard: {
+    borderRadius: 8,
     marginTop: 10,
+    padding: 15,
+  },
+  profileImage: {
+    borderRadius: 50,
+    height: 100,
+    marginBottom: 15,
+    width: 100,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  section: {
+    padding: 20,
+  },
+  sectionTitle: {
+    alignSelf: 'flex-start',
+    marginBottom: 15,
+    marginTop: 10,
+  },
+  settingIcon: {
+    marginRight: 15,
+  },
+  settingItem: {
+    alignItems: 'center',
+    backgroundColor: '#111',
+    borderRadius: 10,
+    flexDirection: 'row',
+    marginBottom: 10,
+    padding: 15,
+    width: '100%',
+  },
+  settingLabel: {
+    flex: 1,
   },
   statItem: {
     alignItems: 'center',
@@ -184,36 +235,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     opacity: 0.7,
   },
-  sectionTitle: {
-    alignSelf: 'flex-start',
-    marginBottom: 15,
-    marginTop: 10,
-  },
-  settingItem: {
+  statsContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#111',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    width: '100%',
-  },
-  settingIcon: {
-    marginRight: 15,
-  },
-  settingLabel: {
-    flex: 1,
-  },
-  section: {
-    padding: 20,
-  },
-  infoCard: {
-    padding: 15,
-    borderRadius: 8,
+    justifyContent: 'space-around',
     marginTop: 10,
+    width: '80%',
   },
-  actions: {
-    padding: 20,
-    gap: 10,
-  }
-}); 
+  username: {
+    marginBottom: 5,
+  },
+});

@@ -1,0 +1,112 @@
+{
+  "extends": [
+    "airbnb",
+    "plugin:react/recommended",
+    "plugin:react-native/all",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "node": true,
+    "browser": true,
+    "react-native/react-native": true
+  },
+  "plugins": [
+    "react",
+    "react-native",
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    },
+    "react": {
+      "version": "detect"
+    },
+    "import/core-modules": ["expo-constants"]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": ["**/*-test.ts", "**/*-test.tsx"] }],
+        "import/extensions": 0,
+        "@typescript-eslint/no-unused-expressions": 0
+      }
+    },
+    {
+        "files": ["*.ts", "*.tsx"],
+        "rules": {
+          "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }]
+        }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {
+        "react/jsx-filename-extension": "off",
+        "no-use-before-define": ["error", { "functions": false, "classes": false, "variables": false }]
+      }
+    },
+    {
+      "files": ["*.json5"],
+      "parser": "jsonc-eslint-parser",
+      "extends": ["plugin:jsonc/recommended-with-json5"],
+      "parserOptions": {
+        "jsonSyntax": "JSON5"
+      },
+      "rules": {
+        "no-tabs": 0,
+        "max-len": 0,
+        "jsonc/comma-dangle": ["error", {
+          "arrays": "always",
+          "objects": "always"
+        }],
+        "jsonc/indent": ["error", 2, {}],
+        "jsonc/quotes": ["error", "single", { "avoidEscape": true }]
+      }
+    }
+  ],
+  "rules": {
+    "no-console": "warn",
+    "no-warning-comments": ["warn", { "terms": ["fixme"], "location": "anywhere" }],
+    "prefer-destructuring": ["warn", { "object": true, "array": false }],
+    "react/prop-types": "off",
+    "react-native/no-unused-styles": "error",
+    "react-native/no-inline-styles": "warn",
+    "react-native/no-color-literals": "warn",
+    "prettier/prettier": "error",
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": [
+      "error", 
+      {
+        "packageDir": "./",
+        "devDependencies": ["**/*-test.ts", "**/*-test.tsx", "@expo/vector-icons"],
+        "peerDependencies": true,
+        "optionalDependencies": true,
+        "bundledDependencies": true
+      }
+    ],
+    "no-param-reassign": ["error", { "props": false }],
+    "no-use-before-define": ["error", { "functions": false, "classes": false, "variables": false }],
+    "no-underscore-dangle": "off",
+    "no-restricted-globals": "off",
+    "no-nested-ternary": "off",
+    "react/jsx-no-constructed-context-values": "warn",
+    "react/jsx-no-useless-fragment": "warn",
+    "react/no-unstable-nested-components": "warn",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  }
+} 

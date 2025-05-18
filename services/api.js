@@ -42,7 +42,7 @@ export const AuthService = {
       throw err.response?.data || err.message;
     }
   },
-  
+
   login: async (credentials) => {
     try {
       const res = await axios.post(`${API_URL}/users/login`, credentials);
@@ -53,12 +53,12 @@ export const AuthService = {
       throw err.response?.data || err.message;
     }
   },
-  
+
   logout: async () => {
     await AsyncStorage.removeItem('@auth_token');
     setAuthToken();
   },
-  
+
   getProfile: async () => {
     try {
       await setAuthToken();
@@ -67,7 +67,7 @@ export const AuthService = {
     } catch (err) {
       throw err.response?.data || err.message;
     }
-  }
+  },
 };
 
 export const PostService = {
@@ -80,13 +80,13 @@ export const PostService = {
       throw err.response?.data || err.message;
     }
   },
-  
+
   getFriendsPosts: async () => {
     await setAuthToken();
     try {
       // If your backend has a dedicated endpoint for friends' posts, use it:
       // const res = await axios.get(`${API_URL}/posts/friends`);
-      
+
       // Otherwise, we'll fetch all posts and filter client-side
       const res = await axios.get(`${API_URL}/posts`);
       return res.data;
@@ -94,7 +94,7 @@ export const PostService = {
       throw err.response?.data || err.message;
     }
   },
-  
+
   createPost: async (postData) => {
     await setAuthToken();
     try {
@@ -104,7 +104,7 @@ export const PostService = {
       throw err.response?.data || err.message;
     }
   },
-  
+
   likePost: async (postId) => {
     await setAuthToken();
     try {
@@ -113,7 +113,7 @@ export const PostService = {
     } catch (err) {
       throw err.response?.data || err.message;
     }
-  }
+  },
 };
 
 export const UserService = {
@@ -123,15 +123,14 @@ export const UserService = {
       if (userId) {
         const res = await axios.get(`${API_URL}/users/${userId}`);
         return res.data;
-      } else {
-        const res = await axios.get(`${API_URL}/users/me`);
-        return res.data;
       }
+      const res = await axios.get(`${API_URL}/users/me`);
+      return res.data;
     } catch (err) {
       throw err.response?.data || err.message;
     }
   },
-  
+
   addFriend: async (friendId) => {
     await setAuthToken();
     try {
@@ -141,7 +140,7 @@ export const UserService = {
       throw err.response?.data || err.message;
     }
   },
-  
+
   removeFriend: async (friendId) => {
     await setAuthToken();
     try {
@@ -151,7 +150,7 @@ export const UserService = {
       throw err.response?.data || err.message;
     }
   },
-  
+
   searchUsers: async (query) => {
     await setAuthToken();
     try {
@@ -160,7 +159,7 @@ export const UserService = {
     } catch (err) {
       throw err.response?.data || err.message;
     }
-  }
+  },
 };
 
 // Create similar services for users, groups, and comments

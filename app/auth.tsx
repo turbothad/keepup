@@ -50,14 +50,14 @@ export default function AuthScreen() {
   return (
     <ThemedView style={styles.container}>
       {isLogin ? (
-        <LoginForm 
-          onLogin={handleLogin} 
-          onSwitchToSignup={() => setIsLogin(false)} 
+        <LoginForm
+          onLogin={handleLogin}
+          onSwitchToSignup={() => setIsLogin(false)}
         />
       ) : (
-        <SignupForm 
-          onSignup={handleSignup} 
-          onSwitchToLogin={() => setIsLogin(true)} 
+        <SignupForm
+          onSignup={handleSignup}
+          onSwitchToLogin={() => setIsLogin(true)}
         />
       )}
     </ThemedView>
@@ -66,9 +66,9 @@ export default function AuthScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
-}); 
+});
