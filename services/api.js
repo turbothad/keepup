@@ -2,9 +2,14 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'http://localhost:818/api';
-// For physical devices, use your computer's local IP instead:
-// const API_URL = 'http://192.168.x.x:818/api';
+// Check if we're in development or production
+const isDev = process.env.NODE_ENV === 'development' || __DEV__;
+
+// Use appropriate API URL based on environment
+const API_URL = isDev
+  ? 'http://localhost:5001/api' // Local development
+  : 'https://keepup-server.vercel.app/api'; // Production
+
 
 // Set auth token for all requests
 const setAuthToken = async () => {
